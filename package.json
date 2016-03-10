@@ -16,6 +16,7 @@
     "redux-thunk": "^2.0.1"
   },
   "devDependencies": {
-    "qs": "^6.1.0"
+    "qs": "^6.1.0",
+    "react-native-viewport-units": "0.0.5"
   }
 }

@@ -19,11 +19,11 @@ class User extends Component {
       billable_total
     } = this.props
 
-    let gravatar = `https://www.gravatar.com/avatar/${md5(email)}`
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email)}`
 
     return (
       <View style={styles.listItem}>
-        <Image style={styles.avatar} src={gravatar} alt={`${first_name} ${last_name}`} />
+        <Image style={styles.avatar} source={{ uri: gravatar}} />
         <Text style={[styles.inlineUserDetail, styles.name]}>{first_name} {last_name}</Text>
         <Text style={[styles.inlineUserDetail, styles.totalHours]}>{total.toFixed(2)}</Text>
         <Text style={[styles.inlineUserDetail, styles.billableHours]}>{billable_total.toFixed(2)}</Text>
@@ -46,6 +46,9 @@ const styles = {
   avatarContainer: {
   },
   avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25
   },
   name: {
   },

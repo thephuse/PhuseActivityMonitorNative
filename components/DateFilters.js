@@ -6,16 +6,21 @@ import React, {
 } from 'react-native'
 import moment from 'moment'
 
+import {
+  setPeriod,
+  setDates,
+  fetchTimes
+} from '../actions'
+
 class DateFilters extends Component {
 
-  setCustomDate(startOrEnd, event) {
+  setCustomDate(startOrEnd, date) {
     const { dispatch } = this.props
-    console.log(startOrEnd, event)
-    // if (value) {
-    //   dispatch(setPeriod('CUSTOM'))
-    //   dispatch(setDates(moment(event.target.value), startOrEnd))
-    //   dispatch(fetchTimes())
-    // }
+    if (date) {
+      dispatch(setPeriod('CUSTOM'))
+      dispatch(setDates(moment(date), startOrEnd))
+      dispatch(fetchTimes())
+    }
   }
 
   render() {
@@ -26,19 +31,21 @@ class DateFilters extends Component {
 
     return (
       <View style={styles.dateInputContainer}>
-      
-        <DatePickerIOS
-          style={styles.dateInput}
+
+        {/*<DatePickerIOS
+          mode="date"
           date={moment(startDate).toDate()}
           maximumDate={moment(endDate).toDate()}
-          onDateChange={this.setCustomDate.bind(this, 'start')} />
+          onDateChange={this.setCustomDate.bind(this, 'start')}
+        />
 
         <DatePickerIOS
-          style={styles.dateInput}
+          mode="date"
           date={moment(endDate).toDate()}
           minimumDate={moment(startDate).toDate()}
           maximumDate={moment().toDate()}
-          onDateChange={this.setCustomDate.bind(this, 'end')} />
+          onDateChange={this.setCustomDate.bind(this, 'end')}
+        />*/}
 
       </View>
     )

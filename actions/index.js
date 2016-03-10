@@ -108,7 +108,7 @@ export function fetchTimes() {
     const dates = generateDates(state)
     const cookie = getCookie(state)
     dispatch(requestTimes(dates))
-    return fetch(`${serverUrl}/times/2016-01-01/${dates.endDate}`, { headers: { cookie: cookie } })
+    return fetch(`${serverUrl}/times/${dates.startDate}/${dates.endDate}`, { headers: { cookie: cookie } })
       .then(response => response.json())
       .then(json => json.map(item => item.user).filter(item => (item.total > 0)))
       .then(times => dispatch(receiveTimes(times)))

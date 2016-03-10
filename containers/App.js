@@ -23,14 +23,14 @@ import User from '../components/User'
 // import Sort from '../components/Sort'
 // import Loader from '../components/Loader'
 import DateFilters from '../components/DateFilters'
-// import PeriodFilters from '../components/PeriodFilters'
-// import PeriodStatistics from '../components/PeriodStatistics'
+import PeriodFilters from '../components/PeriodFilters'
+import PeriodStatistics from '../components/PeriodStatistics'
 
 class App extends Component {
 
   componentDidMount() {
     const { dispatch, times } = this.props
-    const cookie = oAuth(oAuthUrl, appUrl, (cookie) => {
+    const cookie = oAuth(cookie => {
       dispatch(setCookie(cookie))
       dispatch(fetchTimes())
     })
@@ -54,18 +54,14 @@ class App extends Component {
     return (
       <View>
         <DateFilters {...this.props} />
-        {/*<PeriodFilters {...this.props} />*/}
-        {/*<PeriodStatistics times={times} />*/}
-        {times.length
-          ?
-            // <Sort {...this.props} />
-            <ScrollView style={styles.userList}>
-              {items}
-            </ScrollView>
-          : isFetching ?
-            <Text>Loading times</Text>
-          :
-            period === 'DAY' ? noResultsDay : noResultsPeriod
+        <PeriodFilters {...this.props} />
+        <PeriodStatistics times={times} />
+        {times.length ?
+          <ScrollView style={styles.userList}>{items}</ScrollView>
+        : isFetching ?
+          <Text>Loading times</Text>
+        :
+          period === 'DAY' ? noResultsDay : noResultsPeriod
         }
       </View>
     )
