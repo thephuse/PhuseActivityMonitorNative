@@ -5,17 +5,27 @@ import qs from 'qs'
 import {
   oAuthUrl,
   appUrl,
+  serverUrl,
   maxAge
 } from '../config'
 
 export default function oAuth(callback) {
+
   const handleAuthUrl = handleUrl(callback)
+
+  const handleFailure = function() {
+    Linking.addEventListener('url', handleAuthUrl)
+    Linking.openURL(oAuthUrl)
+  }
+
+  const handleSuccess = function(cookie) {
+    return fetch(serverUrl, { headers: { cookie: cookie } })
+      .then(response => (response.status === 403) ? handleFailure() : callback(cookie))
+  }
+
   return checkCookie({
-    success : callback,
-    failure : function() {
-      Linking.addEventListener('url', handleAuthUrl)
-      Linking.openURL(oAuthUrl)
-    }
+    success : handleSuccess,
+    failure : handleFailure
   })
 }
 

@@ -30,7 +30,7 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch, times } = this.props
-    const cookie = oAuth(cookie => {
+    oAuth(cookie => {
       dispatch(setCookie(cookie))
       dispatch(fetchTimes())
     })
