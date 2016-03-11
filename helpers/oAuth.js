@@ -9,48 +9,70 @@ import {
   maxAge
 } from '../config'
 
-export default function oAuth(callback) {
+export default function oAuth(done) {
+  return checkCookie()
+    .then(testFetch({ done }))
+    .catch(() => openOauthUrl({ done }))
+}
 
-  const handleAuthUrl = handleUrl(callback)
+const openOauthUrl = function({ done }) {
+  Linking.addEventListener('url', handleUrl({ done }))
+  Linking.openURL(oAuthUrl)
+}
 
-  const handleFailure = function() {
-    Linking.addEventListener('url', handleAuthUrl)
-    Linking.openURL(oAuthUrl)
-  }
-
-  const handleSuccess = function(cookie) {
+const testFetch = function({ done }) {
+  return function({ cookie }) {
     return fetch(serverUrl, { headers: { cookie: cookie } })
-      .then(response => (response.status === 403) ? handleFailure() : callback(cookie))
+      .then(response => {
+        if (response.ok && response.status === 200) {
+          return done(cookie)
+        } else {
+          return openOauthUrl({ done })
+        }
+      })
   }
+}
 
-  return checkCookie({
-    success : handleSuccess,
-    failure : handleFailure
+const checkCookie = function() {
+  return new Promise(function(resolve, reject) {
+    const date = moment()
+    let prev
+    AsyncStorage.getItem('prevDate')
+      .then(value => {
+        prev = value
+        return AsyncStorage.getItem('cookie')
+      })
+      .then(cookie => {
+        if (cookie !== null && prev !== null && date.diff(prev) <= maxAge) {
+          return resolve({ cookie })
+        } else {
+          return reject()
+        }
+      })
   })
 }
 
-async function checkCookie({ success, failure }) {
-  const date = moment()
-  const prevDate = await AsyncStorage.getItem('prevDate')
-  const cookie = await AsyncStorage.getItem('cookie')
-  if (cookie !== null && prevDate !== null && date.diff(prevDate) <= maxAge) {
-    return success(cookie)
-  } else {
-    return failure()
-  }
+const saveCookie = function({ cookie }) {
+  return new Promise(function(resolve, reject) {
+    const date = moment()
+    AsyncStorage.setItem('prevDate', date)
+      .then(value => {
+        return AsyncStorage.setItem('cookie', cookie)
+      })
+      .then(() => {
+        return resolve(cookie)
+      })
+      .catch(error => {
+        return reject(error)
+      })
+  })
 }
 
-async function saveCookie(cookie, callback) {
-  const date = moment()
-  await AsyncStorage.setItem('prevDate', date)
-  await AsyncStorage.setItem('cookie', cookie)
-  return callback(cookie)
-}
-
-function handleUrl(callback) {
+function handleUrl({ done }) {
   return function(e) {
     const cookie = qs.parse(e.url.replace(`${appUrl}?`, '')).cookie
     Linking.removeEventListener('url', handleUrl)
-    return saveCookie(cookie, callback)
+    return saveCookie({ cookie: cookie })
+      .then(() => { done(cookie) })
   }
 }

@@ -38,12 +38,15 @@ export default User
 
 const styles = {
   listItem: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f9f9f9'
   },
   inlineUserDetail: {
     flex: 1
-  },
-  avatarContainer: {
   },
   avatar: {
     width: 50,

@@ -39,21 +39,21 @@ class PeriodStatistics extends Component {
         <View style={styles.periodStatistic}>
           <View style={styles.periodStatisticContainer}>
             <Text style={styles.periodStatisticValue}>{total.toFixed(1)}</Text>
-            <Text style={styles.periodStatisticKey}>total</Text>
+            <Text style={styles.periodStatisticKey}>TOTAL</Text>
           </View>
         </View>
 
         <View style={styles.periodStatistic}>
           <View style={styles.periodStatisticContainer}>
             <Text style={styles.periodStatisticValue}>{billableTotal.toFixed(1)}</Text>
-            <Text style={styles.periodStatisticKey}>billable</Text>
+            <Text style={styles.periodStatisticKey}>BILLABLE</Text>
           </View>
         </View>
 
         <View style={styles.periodStatistic}>
           <View style={styles.periodStatisticContainer}>
             <Text style={styles.periodStatisticValue}>{Math.round(billablePercentage)}%</Text>
-            <Text style={styles.periodStatisticKey}>ratio</Text>
+            <Text style={styles.periodStatisticKey}>RATIO</Text>
           </View>
         </View>
 
@@ -70,17 +70,27 @@ const styles = {
   periodStatistics: {
     flexDirection: 'row'
   },
-  periodStatisticContainer: {
-    flex: 1
-  },
   periodStatistic: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  periodStatisticContainer: {
     width: 80,
     height: 80,
     borderRadius: 40,
     backgroundColor: '#efefef'
   },
   periodStatisticValue: {
+    marginTop: 20,
+    fontSize: 24,
+    fontWeight: '200',
+    textAlign: 'center',
+    backgroundColor: 'transparent'
   },
   periodStatisticKey: {
+    textAlign: 'center',
+    fontWeight: '200',
+    fontSize: 9,
+    backgroundColor: 'transparent'
   }
 }
