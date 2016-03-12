@@ -2,13 +2,13 @@
 
 import { Provider } from 'react-redux'
 import React, {
-  AsyncStorage,
   AppRegistry,
   Component
 } from 'react-native'
 
 import configureStore from './store'
-import App from './containers/App'
+import App from './containers/iOS.App'
+
 const store = configureStore()
 
 class PhuseActivityMonitorNative extends Component {

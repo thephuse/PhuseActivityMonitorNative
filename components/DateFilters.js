@@ -32,7 +32,7 @@ class DateFilters extends Component {
     return (
       <View style={styles.dateInputContainer}>
 
-        {/*<DatePickerIOS
+        <DatePickerIOS
           mode="date"
           date={moment(startDate).toDate()}
           maximumDate={moment(endDate).toDate()}
@@ -45,7 +45,7 @@ class DateFilters extends Component {
           minimumDate={moment(startDate).toDate()}
           maximumDate={moment().toDate()}
           onDateChange={this.setCustomDate.bind(this, 'end')}
-        />*/}
+        />
 
       </View>
     )

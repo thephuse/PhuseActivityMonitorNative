@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import moment from 'moment'
 import {
+  LAYOUT,
   SET_DATES,
   SET_PERIOD,
   SORT_BY,
@@ -13,6 +14,7 @@ import periodValues from '../helpers/periodValues'
 import dateFormat from '../helpers/dateFormat'
 
 const initialState = {
+  dimensions : {},
   sortBy : sortByValues[0].value,
   period : periodValues[0].value,
   isFetching : false,
@@ -24,6 +26,10 @@ const initialState = {
 
 function timesheets(state = initialState, action) {
   switch (action.type) {
+    case LAYOUT :
+      return Object.assign({}, state, {
+        dimensions : action.dimensions
+      })
     case SET_COOKIE :
       return Object.assign({}, state, {
         cookie : action.cookie

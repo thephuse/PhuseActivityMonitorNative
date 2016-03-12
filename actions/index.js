@@ -2,12 +2,20 @@ import moment from 'moment'
 import dateFormat from '../helpers/dateFormat'
 import { serverUrl } from '../config'
 
+export const LAYOUT = 'LAYOUT'
 export const SORT_BY = 'SORT_BY'
 export const SET_DATES = 'SET_DATES'
 export const SET_PERIOD = 'SET_PERIOD'
 export const SET_COOKIE = 'SET_COOKIE'
 export const REQUEST_TIMES = 'REQUEST_TIMES'
 export const RECEIVE_TIMES = 'RECEIVE_TIMES'
+
+export function layout(dimensions) {
+  return {
+    type : LAYOUT,
+    dimensions
+  }
+}
 
 export function setCookie(cookie) {
   return {
