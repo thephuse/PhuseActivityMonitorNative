@@ -4,10 +4,10 @@ import React, {
   PropTypes,
   Text,
   ScrollView,
+  TouchableHighlight,
   RefreshControl
 } from 'react-native'
 import moment from 'moment'
-import Button from 'react-native-button'
 import { Actions } from 'react-native-router-flux'
 
 import PeriodStatistics from '../components/PeriodStatistics'
@@ -19,7 +19,7 @@ import {
 
 import User from '../components/User'
 
-class AppView extends Component {
+class Timesheets extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
@@ -51,13 +51,7 @@ class AppView extends Component {
 
     return (
       <View style={styles.rootView}>
-        {/*<DateFilters {...this.props} />
-        <PeriodFilters {...this.props} />*/}
         <PeriodStatistics times={times} />
-        <View>
-          <Button onPress={Actions.dates}>Change Dates</Button>
-          <Button onPress={Actions.period}>Change Period</Button>
-        </View>
         <ScrollView
           style={styles.userList}
           refreshControl={
@@ -68,8 +62,22 @@ class AppView extends Component {
             />
           }
         >
-          {(times.length ? items : isFetching === false ? period === 'DAY' ? noResultsDay : noResultsPeriod : null)}
+          {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
         </ScrollView>
+        <View style={styles.navButtons}>
+          <TouchableHighlight onPress={Actions.dates}>
+            <View style={styles.navButton}>
+              <Text>Dates</Text>
+              <Text>({moment(startDate).format('YYYY-M-D')})</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={Actions.period}>
+            <View style={styles.navButton}>
+              <Text>Period</Text>
+              <Text>({period})</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </View>
     )
 
@@ -77,25 +85,32 @@ class AppView extends Component {
 
 }
 
-export default AppView
+export default Timesheets
 
-AppView.propTypes = {
-  startDate : PropTypes.string.isRequired,
-  endDate : PropTypes.string.isRequired,
-  period : PropTypes.string.isRequired,
-  calendar : PropTypes.bool.isRequired,
-  times : PropTypes.array.isRequired,
-  isFetching : PropTypes.bool.isRequired
+Timesheets.propTypes = {
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  period: PropTypes.string.isRequired,
+  calendar: PropTypes.bool.isRequired,
+  times: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired
 }
 
 const styles = {
   rootView: {
     flex: 1,
     flexDirection: 'column',
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
+    backgroundColor: 'white'
   },
   userList: {
     flex: 1,
+    backgroundColor: 'white'
+  },
+  navButtons: {
+    backgroundColor: 'white'
+  },
+  navButton: {
     backgroundColor: 'white'
   }
 }

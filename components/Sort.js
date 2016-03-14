@@ -4,48 +4,48 @@ import { sortBy } from '../actions'
 import sortByValues from '../helpers/sortByValues'
 
 const styles = {
-  listHeader : {
-    display : 'flex',
-    flexDirection : 'row',
-    alignItems : 'center',
-    boxSizing : 'border-box',
-    padding : 10,
-    textTransform : 'uppercase',
-    fontWeight : 200,
-    borderBottom : '1px solid #cfcfcf',
-    fontSize : 13,
-    color : '#777'
+  listHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    padding: 10,
+    textTransform: 'uppercase',
+    fontWeight: 200,
+    borderBottom: '1px solid #cfcfcf',
+    fontSize: 13,
+    color: '#777'
   },
-  inlineUserDetail : {
-    flex : 1,
-    cursor : 'pointer',
-    userSelect : 'none',
-    WebkitUserSelect : 'none',
-    boxSizing : 'border-box',
-    marginRight : 10,
-    position : 'relative'
+  inlineUserDetail: {
+    flex: 1,
+    cursor: 'pointer',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    boxSizing: 'border-box',
+    marginRight: 10,
+    position: 'relative'
   },
-  sort : {
-    base : {
-      display : 'inline-block',
-      verticalAlign : 'middle',
-      top : '50%',
-      width : 0,
-      height : 0,
+  sort: {
+    base: {
+      display: 'inline-block',
+      verticalAlign: 'middle',
+      top: '50%',
+      width: 0,
+      height: 0,
 
-      marginLeft : 10,
-      borderLeft : 'solid 4px transparent',
-      borderRight : 'solid 4px transparent',
-      borderTop : 'solid 4px transparent',
-      borderBottom : 'solid 4px transparent'
+      marginLeft: 10,
+      borderLeft: 'solid 4px transparent',
+      borderRight: 'solid 4px transparent',
+      borderTop: 'solid 4px transparent',
+      borderBottom: 'solid 4px transparent'
     },
-    ascending : {
-      marginTop : -7,
-      borderBottom : 'solid 4px #999'
+    ascending: {
+      marginTop: -7,
+      borderBottom: 'solid 4px #999'
     },
-    descending : {
-      marginTop : 0,
-      borderTop : 'solid 4px #999'
+    descending: {
+      marginTop: 0,
+      borderTop: 'solid 4px #999'
     }
   }
 }
@@ -101,8 +101,8 @@ class Sort extends Component {
 }
 
 Sort.propTypes = {
-  sortBy : PropTypes.oneOf(sortByValues.map(i => i.value)),
-  dispatch : PropTypes.func.isRequired
+  sortBy: PropTypes.oneOf(sortByValues.map(i => i.value)),
+  dispatch: PropTypes.func.isRequired
 }
 
 export default Radium(Sort)

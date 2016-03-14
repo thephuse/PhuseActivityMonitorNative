@@ -12,31 +12,31 @@ export const RECEIVE_TIMES = 'RECEIVE_TIMES'
 
 export function layout(dimensions) {
   return {
-    type : LAYOUT,
+    type: LAYOUT,
     dimensions
   }
 }
 
 export function setCookie(cookie) {
   return {
-    type : SET_COOKIE,
+    type: SET_COOKIE,
     cookie
   }
 }
 
-export function requestTimes({ startDate, endDate }) {
+export function requestTimes() {
   return {
-    type : REQUEST_TIMES,
-    startDate,
-    endDate
+    type: REQUEST_TIMES,
+    isFetching: true
   }
 }
 
 export function receiveTimes(times) {
   return {
-    type : RECEIVE_TIMES,
+    type: RECEIVE_TIMES,
     times,
-    receivedAt : Date.now()
+    isFetching: false,
+    receivedAt: Date.now()
   }
 }
 
@@ -55,14 +55,14 @@ export function getCookie(state) {
 
 export function sortBy(sort) {
   return {
-    type : SORT_BY,
-    value : sort
+    type: SORT_BY,
+    value: sort
   }
 }
 
 export function setPeriod(period) {
   return {
-    type : SET_PERIOD,
+    type: SET_PERIOD,
     period
   }
 }
@@ -103,22 +103,33 @@ export function setDates(selectedDate = new Date(), startOrEnd = 'start') {
     }
 
     dispatch({
-      type : SET_DATES,
+      type: SET_DATES,
       startDate,
       endDate
     })
   }
 }
 
+/**
+ * setTimeout here is a dirty workaround to a race condition
+ * related to the `reloading` check interval, that's evidently
+ * built into React's RefreshControl component. 250ms is the
+ * minimum value that circumvents the loader being shown when
+ * content is loaded from a cache.
+ */
 export function fetchTimes() {
   return (dispatch, getState) => {
     const state = getState()
     const dates = generateDates(state)
     const cookie = getCookie(state)
-    dispatch(requestTimes(dates))
+    dispatch(requestTimes())
     return fetch(`${serverUrl}/times/${dates.startDate}/${dates.endDate}`, { headers: { cookie: cookie } })
       .then(response => response.json())
       .then(json => json.map(item => item.user).filter(item => (item.total > 0)))
-      .then(times => dispatch(receiveTimes(times)))
+      .then(function(times) {
+        setTimeout(function() {
+          dispatch(receiveTimes(times))
+        }, 250)
+      })
   }
 }

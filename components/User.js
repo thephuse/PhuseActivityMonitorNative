@@ -43,7 +43,8 @@ const styles = {
     alignItems: 'center',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'white'
+    borderBottomColor: '#f9f9f9',
+    backgroundColor: 'white'
   },
   inlineUserDetail: {
     flex: 1

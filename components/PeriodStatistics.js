@@ -69,9 +69,10 @@ export default PeriodStatistics
 const styles = {
   periodStatistics: {
     flexDirection: 'row',
-    backgroundColor: '#cfcfcf',
-    paddingTop: 20,
-    paddingBottom: 20
+    paddingTop: 35,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9e9e9'
   },
   periodStatistic: {
     flex: 1,
@@ -81,7 +82,8 @@ const styles = {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#efefef'
+    borderWidth: 1,
+    borderColor: '#efefef'
   },
   periodStatisticValue: {
     marginTop: 20,

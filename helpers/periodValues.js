@@ -1,19 +1,19 @@
 const periodValues = [
   {
-    title : 'Day',
-    value : 'DAY'
+    title: 'Day',
+    value: 'DAY'
   },
   {
-    title : 'Week',
-    value : 'WEEK'
+    title: 'Week',
+    value: 'WEEK'
   },
   {
-    title : 'Month',
-    value : 'MONTH'
+    title: 'Month',
+    value: 'MONTH'
   },
   {
-    title : 'Year',
-    value : 'YEAR'
+    title: 'Year',
+    value: 'YEAR'
   }
 ]
 

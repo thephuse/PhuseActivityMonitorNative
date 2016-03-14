@@ -7,7 +7,9 @@ import React, {
 } from 'react-native'
 
 import configureStore from './store'
-import App from './containers/iOS.App'
+import Routes from './components/Routes'
+
+console.ignoredYellowBox = ['Warning: Failed propType']
 
 const store = configureStore()
 
@@ -16,7 +18,7 @@ class PhuseActivityMonitorNative extends Component {
   render() {
     return (
       <Provider store={store}>
-        <App />
+        <Routes />
       </Provider>
     )
   }
