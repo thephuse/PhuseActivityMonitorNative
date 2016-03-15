@@ -4,20 +4,19 @@ import React, {
   PropTypes,
   Text,
   ScrollView,
-  TouchableHighlight,
   RefreshControl
 } from 'react-native'
 import moment from 'moment'
-import { Actions } from 'react-native-router-flux'
 
-import PeriodStatistics from '../components/PeriodStatistics'
 import oAuth from '../helpers/oAuth'
 import {
   setCookie,
   fetchTimes
 } from '../actions'
 
+import Nav from '../components/Nav'
 import User from '../components/User'
+import PeriodStatistics from './PeriodStatistics'
 
 class Timesheets extends Component {
 
@@ -42,16 +41,17 @@ class Timesheets extends Component {
       sortByValues,
       isFetching,
       times,
+      sortBy,
       period
     } = this.props
 
     const noResultsDay = <Text>No times have been logged for {moment(startDate).format('MMMM Do, YYYY')}.</Text>
     const noResultsPeriod = <Text>No times have been logged between {moment(startDate).format('MMMM Do, YYYY')} and {moment(endDate).format('MMMM Do, YYYY')}.</Text>
-    const items = times.map(user => <User key={user.id} {...user} />)
+    const items = times.map((user, ind) => <User key={user.id} index={ind} {...user} />)
 
     return (
       <View style={styles.rootView}>
-        <PeriodStatistics times={times} />
+        <PeriodStatistics {...this.props} />
         <ScrollView
           style={styles.userList}
           refreshControl={
@@ -60,24 +60,11 @@ class Timesheets extends Component {
               onRefresh={this.refresh.bind(this)}
               title="Loading..."
             />
-          }
-        >
+          }>
+          {(times.length ? <User header={true} /> : null )}
           {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
         </ScrollView>
-        <View style={styles.navButtons}>
-          <TouchableHighlight onPress={Actions.dates}>
-            <View style={styles.navButton}>
-              <Text>Dates</Text>
-              <Text>({moment(startDate).format('YYYY-M-D')})</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={Actions.period}>
-            <View style={styles.navButton}>
-              <Text>Period</Text>
-              <Text>({period})</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        <Nav {...this.props} />
       </View>
     )
 
@@ -91,7 +78,6 @@ Timesheets.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   period: PropTypes.string.isRequired,
-  calendar: PropTypes.bool.isRequired,
   times: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired
 }
@@ -105,12 +91,6 @@ const styles = {
   },
   userList: {
     flex: 1,
-    backgroundColor: 'white'
-  },
-  navButtons: {
-    backgroundColor: 'white'
-  },
-  navButton: {
     backgroundColor: 'white'
   }
 }

@@ -18,7 +18,6 @@ const initialState = {
   sortBy: sortByValues[0].value,
   period: periodValues[0].value,
   isFetching: false,
-  calendar: false,
   startDate: moment().format(dateFormat),
   endDate: moment().format(dateFormat),
   times: []

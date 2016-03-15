@@ -4,28 +4,48 @@ import React, {
   View,
   Text
 } from 'react-native'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { weekDays } from 'moment-business'
+import moment from 'moment'
+
+import { workingHours } from '../config'
 
 const getBillablePercentage = function(timesheets) {
-    let total = 0
-    let billableTotal = 0
-    let billablePercentage = 0
-    if (timesheets && timesheets.length) {
-      total = timesheets.map(timesheet => timesheet.total).reduce((prev, curr) => { return prev + curr })
-      billableTotal = timesheets.map(timesheet => timesheet.billable_total).reduce((prev, curr) => { return prev + curr })
-      billablePercentage = (billableTotal / total * 100)
-    }
-    return {
-      total,
-      billableTotal,
-      billablePercentage
-    }
+  let total = 0
+  let billableTotal = 0
+  let billablePercentage = 0
+  if (timesheets && timesheets.length) {
+    total = timesheets.map(timesheet => timesheet.total).reduce((prev, curr) => { return prev + curr })
+    billableTotal = timesheets.map(timesheet => timesheet.billable_total).reduce((prev, curr) => { return prev + curr })
+    billablePercentage = (billableTotal / total * 100)
   }
+  return {
+    total,
+    billableTotal,
+    billablePercentage
+  }
+}
+
+const renderFigures = function(figure, text) {
+  return (
+    <View style={styles.inlinePercentageText}>
+      <View style={styles.inlinePercentageTextPositioner}>
+        <Text style={styles.periodStatisticValue}>{figure}</Text>
+        <Text style={styles.periodStatisticKey}>{text}</Text>
+      </View>
+    </View>
+  )
+}
 
 class PeriodStatistics extends Component {
 
   render() {
 
-    const { times } = this.props
+    const {
+      times,
+      startDate,
+      endDate
+    } = this.props
 
     const {
       total,
@@ -33,28 +53,50 @@ class PeriodStatistics extends Component {
       billablePercentage
     } = getBillablePercentage(times)
 
+    const fromDate = moment(startDate).startOf('day')
+    const toDate = (moment(endDate).startOf('day').isAfter(moment().startOf('day')) ? moment().startOf('day') : moment(endDate).startOf('day'))
+    const maximumHours = ((fromDate.isSame(toDate) ? workingHours : fromDate.weekDays(toDate, 'd') * workingHours) * times.length)
+
     return (
       <View style={styles.periodStatistics}>
 
         <View style={styles.periodStatistic}>
-          <View style={styles.periodStatisticContainer}>
-            <Text style={styles.periodStatisticValue}>{total.toFixed(1)}</Text>
-            <Text style={styles.periodStatisticKey}>TOTAL</Text>
-          </View>
+          <AnimatedCircularProgress
+            key="total"
+            size={90}
+            width={2}
+            fill={(total === 0 ? 0 : Math.round(total / maximumHours * 100))}
+            tintColor="#2B8CBE"
+            backgroundColor="#DFDFDF"
+            rotation={0}
+          />
+          {renderFigures(total.toFixed(1), 'TOTAL')}
         </View>
 
         <View style={styles.periodStatistic}>
-          <View style={styles.periodStatisticContainer}>
-            <Text style={styles.periodStatisticValue}>{billableTotal.toFixed(1)}</Text>
-            <Text style={styles.periodStatisticKey}>BILLABLE</Text>
-          </View>
+          <AnimatedCircularProgress
+            key="billableTotal"
+            size={90}
+            width={2}
+            fill={(billableTotal === 0 ? 0 : Math.round(billableTotal / maximumHours * 100))}
+            tintColor="#2B8CBE"
+            backgroundColor="#DFDFDF"
+            rotation={0}
+          />
+          {renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
         </View>
 
         <View style={styles.periodStatistic}>
-          <View style={styles.periodStatisticContainer}>
-            <Text style={styles.periodStatisticValue}>{Math.round(billablePercentage)}%</Text>
-            <Text style={styles.periodStatisticKey}>RATIO</Text>
-          </View>
+          <AnimatedCircularProgress
+            key="percentage"
+            size={90}
+            width={2}
+            fill={Math.round(billablePercentage)}
+            tintColor="#2B8CBE"
+            backgroundColor="#DFDFDF"
+            rotation={0}
+          />
+          {renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
         </View>
 
       </View>
@@ -68,34 +110,47 @@ export default PeriodStatistics
 
 const styles = {
   periodStatistics: {
+    flex: 0,
     flexDirection: 'row',
-    paddingTop: 35,
+    justifyContent: 'space-around',
+    paddingTop: 40,
     paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e9e9e9'
+    borderBottomColor: '#efefef'
   },
   periodStatistic: {
     flex: 1,
-    alignItems: 'center'
-  },
-  periodStatisticContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 1,
-    borderColor: '#efefef'
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   periodStatisticValue: {
-    marginTop: 20,
     fontSize: 24,
     fontWeight: '200',
-    textAlign: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    textAlign: 'center'
   },
   periodStatisticKey: {
-    textAlign: 'center',
     fontWeight: '200',
-    fontSize: 9,
-    backgroundColor: 'transparent'
+    fontSize: 10,
+    letterSpacing: 0.5,
+    backgroundColor: 'transparent',
+    textAlign: 'center'
+  },
+  inlinePercentageText: {
+    position: 'absolute',
+    flexDirection: 'row',
+    flex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 90,
+    alignItems: 'stretch'
+  },
+  inlinePercentageTextPositioner: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }
