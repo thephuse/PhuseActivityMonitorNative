@@ -53,6 +53,9 @@ class Nav extends Component {
 
     const fromDate = moment(startDate)
     const toDate = moment(endDate)
+    const sortText = sortBy.split('_')
+    const sortTextAbove = capitalize(sortText.shift())
+    const sortTextBelow = sortText.pop()
 
     return (
       <View
@@ -61,6 +64,7 @@ class Nav extends Component {
 
         <TouchableHighlight
           style={styles.navButtonHighlight}
+          underlayColor="#2B8CBE"
           onPress={Actions.startDate}>
           <View style={styles.navButton}>
             <Text style={styles.navButtonKey}>FROM</Text>
@@ -71,6 +75,7 @@ class Nav extends Component {
 
         <TouchableHighlight
           style={styles.navButtonHighlight}
+          underlayColor="#2B8CBE"
           onPress={Actions.endDate}>
           <View style={styles.navButton}>
             <Text style={styles.navButtonKey}>TO</Text>
@@ -81,6 +86,7 @@ class Nav extends Component {
 
         <TouchableHighlight
           style={styles.navButtonHighlight}
+          underlayColor="#2B8CBE"
           onPress={Actions.period}>
           <View style={styles.navButton}>
             <Text style={styles.navButtonKey}>PERIOD</Text>
@@ -90,10 +96,12 @@ class Nav extends Component {
 
         <TouchableHighlight
           style={styles.navButtonHighlight}
+          underlayColor="#2B8CBE"
           onPress={Actions.sort}>
           <View style={styles.navButton}>
-            <Text style={styles.navButtonKey}>SORT</Text>
-            <Text style={styles.navButtonValue}>Order</Text>
+            <Text style={styles.navButtonKey}>SORT BY</Text>
+            <Text style={styles.navButtonValue}>{sortTextAbove}</Text>
+            <Text style={styles.navButtonKey}>{sortTextBelow}</Text>
           </View>
         </TouchableHighlight>
 
@@ -117,7 +125,7 @@ const styles = {
     flex: 0,
     flexDirection: 'row',
     backgroundColor: 'white',
-    shadowColor: "#000000",
+    shadowColor: 'black',
     shadowOpacity: 0.1,
     shadowRadius: 12,
     shadowOffset: {

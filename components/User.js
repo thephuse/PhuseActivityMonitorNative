@@ -44,7 +44,9 @@ class User extends Component {
 
     return (header === true ?
       <TouchableHighlight onPress={Actions.sort}>
-        <View style={[styles.listItem, styles.borderlessListItem]}>
+        <View
+          style={[styles.listItem, styles.borderlessListItem]}
+          shouldRasterizeIOS={true}>
           <View style={styles.avatarPlaceholder} />
           <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
           <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
@@ -56,7 +58,9 @@ class User extends Component {
         </View>
       </TouchableHighlight>
     :
-      <Animated.View style={[styles.listItem, {transform: [{translateY: this.state.translateY}], opacity: this.state.opacity}]}>
+      <Animated.View
+        style={[styles.listItem, {transform: [{translateY: this.state.translateY}], opacity: this.state.opacity}]}
+        shouldRasterizeIOS={true}>
         <Image style={styles.avatar} source={{ uri: gravatar}} />
         <Text style={[styles.inlineUserDetail, styles.name]}>{`${first_name}\n${last_name}`}</Text>
         <Text style={[styles.inlineUserDetail, styles.totalHours]}>{total.toFixed(2)}</Text>

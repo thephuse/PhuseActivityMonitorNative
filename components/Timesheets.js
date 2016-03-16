@@ -45,8 +45,8 @@ class Timesheets extends Component {
       period
     } = this.props
 
-    const noResultsDay = <Text>No times have been logged for {moment(startDate).format('MMMM Do, YYYY')}.</Text>
-    const noResultsPeriod = <Text>No times have been logged between {moment(startDate).format('MMMM Do, YYYY')} and {moment(endDate).format('MMMM Do, YYYY')}.</Text>
+    const noResultsDay = <Text style={styles.noResults}>No times have been logged for {moment(startDate).format('MMMM Do, YYYY')}.</Text>
+    const noResultsPeriod = <Text style={styles.noResults}>No times have been logged between {moment(startDate).format('MMMM Do, YYYY')} and {moment(endDate).format('MMMM Do, YYYY')}.</Text>
     const items = times.map((user, ind) => <User key={user.id} index={ind} {...user} />)
 
     return (
@@ -58,7 +58,6 @@ class Timesheets extends Component {
             <RefreshControl
               refreshing={isFetching}
               onRefresh={this.refresh.bind(this)}
-              title="Loading..."
             />
           }>
           {(times.length ? <User header={true} /> : null )}
@@ -92,5 +91,12 @@ const styles = {
   userList: {
     flex: 1,
     backgroundColor: 'white'
+  },
+  noResults: {
+    padding: 20,
+    fontSize: 18,
+    lineHeight: 26,
+    fontWeight: '200',
+    textAlign: 'center'
   }
 }
