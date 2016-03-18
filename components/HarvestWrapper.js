@@ -27,7 +27,8 @@ class HarvestWrapper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      checkingCookie: true
+      checkingCookie: true,
+      cookieValid: false
     }
   }
 
@@ -35,62 +36,30 @@ class HarvestWrapper extends Component {
     this.testFetch()
   }
 
-  // async processCookie() {
-  //   const { dispatch } = this.props
-  //   const cookie = await this.checkSavedCookie()
-  //   const authSuccess = await this.testFetch(cookie)
-  //   if (authSuccess === true) {
-  //     dispatch(setCookie(cookie))
-  //     dispatch(fetchTimes())
-  //     this.setState({ checkingCookie: false })
-  //   } else {
-  //     this.setState({ checkingCookie: false })
-  //   }
-  // }
-  //
-  // async checkSavedCookie() {
-  //   const date = moment()
-  //   const prev = await AsyncStorage.getItem('prevDate')
-  //   const cookie = await AsyncStorage.getItem('cookie')
-  //   return cookie
-  // }
+  returnTrue() {
+    return true
+  }
 
   async testFetch(cookie) {
     const response = await fetch(serverUrl, {credentials: 'include'})
     const status = await response.status
     const canFetch = (status === 200 ? true : false)
     if (canFetch) {
-      this.setState({checkingCookie: false})
+      this.setState({
+        checkingCookie: false,
+        cookieValid: true
+      })
     }
   }
 
   async checkCallbackURL(e) {
     const { dispatch } = this.props
     if (e.url && e.url.indexOf(successUrl) === 0) {
-      this.setState({checkingCookie: false})
+      this.setState({
+        checkingCookie: false,
+        cookieValid: true
+      })
     }
-  }
-
-  // async saveCookie(cookie) {
-  //   const date = moment()
-  //   const prevDateSaved = await AsyncStorage.setItem('prevDate', date)
-  //   const cookieSaved = await AsyncStorage.setItem('cookie', cookie)
-  //   return (prevDateSaved && cookieSaved ? true : false)
-  // }
-  //
-  // async getHarvestAuth(e) {
-  //   const { dispatch } = this.props
-  //   if (e.url && e.url.indexOf(successUrl) === 0 && e.loading === false) {
-  //     const cookie = qs.parse(e.url.replace(`${successUrl}?`, '')).cookie
-  //     const cookieSaved = await this.saveCookie(cookie)
-  //     console.log({'saved cookie': cookie})
-  //     dispatch(setCookie(cookie))
-  //     dispatch(fetchTimes())
-  //   }
-  // }
-
-  returnTrue() {
-    return true
   }
 
   render() {
