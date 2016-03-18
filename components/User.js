@@ -1,14 +1,20 @@
 import React, {
   Component,
   PropTypes,
+  Platform,
   View,
   Text,
   Image,
   Animated,
   TouchableHighlight
 } from 'react-native'
+
 import md5 from 'md5'
+import LinearGradient from 'react-native-linear-gradient'
+
 import { Actions } from 'react-native-router-flux'
+
+const ios = Platform.OS === 'ios'
 
 class User extends Component {
 
@@ -40,23 +46,21 @@ class User extends Component {
     } = this.props
 
     const gravatar = `https://www.gravatar.com/avatar/${md5(email)}`
-    const percentage = Math.round(billable_total/total*100)
+    const percentage = (billable_total/total).toFixed(2)
 
     return (header === true ?
-      <TouchableHighlight onPress={Actions.sort}>
-        <View
-          style={[styles.listItem, styles.borderlessListItem]}
-          shouldRasterizeIOS={true}>
-          <View style={styles.avatarPlaceholder} />
-          <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
-          <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
-          <Text style={[styles.inlineUserDetail, styles.billableHours, styles.tableHeader]}>BILLABLE</Text>
-          <View style={[styles.percentageContainer]}>
-            <Text style={styles.tableHeader}>RATIO</Text>
-            <View style={styles.percentageGraphicPlaceholder} />
-          </View>
+      <View
+        style={[styles.listItem, styles.borderlessListItem]}
+        shouldRasterizeIOS={true}>
+        <View style={styles.avatarPlaceholder} />
+        <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
+        <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
+        <Text style={[styles.inlineUserDetail, styles.billableHours, styles.tableHeader]}>BILLABLE</Text>
+        <View style={[styles.percentageContainer]}>
+          <Text style={styles.tableHeader}>RATIO</Text>
+          <View style={styles.percentageGraphicPlaceholder} />
         </View>
-      </TouchableHighlight>
+      </View>
     :
       <Animated.View
         style={[styles.listItem, {transform: [{translateY: this.state.translateY}], opacity: this.state.opacity}]}
@@ -66,11 +70,12 @@ class User extends Component {
         <Text style={[styles.inlineUserDetail, styles.totalHours]}>{total.toFixed(2)}</Text>
         <Text style={[styles.inlineUserDetail, styles.billableHours]}>{billable_total.toFixed(2)}</Text>
         <View style={styles.percentageContainer}>
-          <View style={styles.percentageGraphic}>
-            <View style={[styles.percentageClear, {flex: (1 - percentage/100)}]}></View>
-            <View style={[styles.percentageBlob, {flex: (percentage/100)}]}></View>
-            <Text style={[styles.percentage]}>{percentage}%</Text>
-          </View>
+          <LinearGradient
+            style={styles.percentageGraphic}
+            locations={[0, (1-percentage), (1-percentage), 1]}
+            colors={['#FFF', '#FFF', '#EFEFEF', '#EFEFEF']}>
+            <Text style={[styles.percentage]}>{(percentage * 100).toFixed(0)}%</Text>
+          </LinearGradient>
         </View>
       </Animated.View>
     )
@@ -85,21 +90,28 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderTopWidth: 1,
+    paddingTop: (ios ? 8 : 10),
+    paddingBottom: (ios ? 8 : 10),
+    paddingLeft: (ios ? 15 : 0),
+    paddingRight: (ios ? 15 : 0),
+    marginLeft: (ios ? 0 : 15),
+    marginRight: (ios ? 0 : 15),
+    borderTopWidth: (ios ? 1 : 0),
     borderTopColor: '#f9f9f9',
     backgroundColor: 'white'
   },
   borderlessListItem: {
-    borderTopWidth: 0
+    borderTopWidth: 0,
+    backgroundColor: (ios ? 'white' : '#F9F9F9'),
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginLeft: 0,
+    marginRight: 0
   },
   inlineUserDetail: {
     flex: 1,
     fontWeight: '200',
-    fontSize: 14
+    fontSize: (ios ? 14 : 17)
   },
   avatar: {
     width: 42,
@@ -111,10 +123,11 @@ const styles = {
     height: 1
   },
   name: {
-    paddingLeft: 15,
+    paddingLeft: (ios ? 15 : 0),
     paddingRight: 15,
-    fontWeight: '200',
-    fontSize: 12
+    marginLeft: (ios ? 0 : 15),
+    fontWeight: (ios ? '200' : '500'),
+    fontSize: (ios ? 12 : 17)
   },
   totalHours: {
   },
@@ -144,7 +157,7 @@ const styles = {
   },
   percentage: {
     fontWeight: '200',
-    fontSize: 14,
+    fontSize: (ios ? 14 : 17),
     position: 'absolute',
     top: 11,
     left: 0,
@@ -154,7 +167,7 @@ const styles = {
     backgroundColor: 'transparent'
   },
   tableHeader: {
-    fontSize: 9,
+    fontSize: (ios ? 9 : 12),
     fontWeight: '200',
     color: '#666666'
   }

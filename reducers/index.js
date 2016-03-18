@@ -5,9 +5,14 @@ import {
   SET_DATES,
   SET_PERIOD,
   SORT_BY,
-  SET_COOKIE,
+  OPEN_NAV,
+  CLOSE_NAV,
   REQUEST_TIMES,
-  RECEIVE_TIMES
+  RECEIVE_TIMES,
+  CHECKING_COOKIE,
+  NOT_CHECKING_COOKIE,
+  VALIDATE_COOKIE,
+  INVALIDATE_COOKIE
 } from '../actions'
 import sortByValues from '../helpers/sortByValues'
 import periodValues from '../helpers/periodValues'
@@ -20,7 +25,8 @@ const initialState = {
   isFetching: false,
   startDate: moment().format(dateFormat),
   endDate: moment().format(dateFormat),
-  times: []
+  times: [],
+  cookieValid: true
 }
 
 function timesheets(state = initialState, action) {
@@ -29,9 +35,13 @@ function timesheets(state = initialState, action) {
       return Object.assign({}, state, {
         dimensions: action.dimensions
       })
-    case SET_COOKIE :
+    case OPEN_NAV :
       return Object.assign({}, state, {
-        cookie: action.cookie
+        nav: action.nav
+      })
+    case CLOSE_NAV :
+      return Object.assign({}, state, {
+        nav: action.nav
       })
     case SET_DATES :
       return Object.assign({}, state, {
@@ -41,6 +51,14 @@ function timesheets(state = initialState, action) {
     case SET_PERIOD :
       return Object.assign({}, state, {
         period: action.period
+      })
+    case VALIDATE_COOKIE :
+      return Object.assign({}, state, {
+        cookieValid: action.cookieValid
+      })
+    case INVALIDATE_COOKIE :
+      return Object.assign({}, state, {
+        cookieValid: action.cookieValid
       })
     case SORT_BY :
       return Object.assign({}, state, {

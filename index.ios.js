@@ -21,8 +21,8 @@ import configureStore from './store'
 import sort from './helpers/sort'
 import sortByValues from './helpers/sortByValues'
 import Timesheets from './components/Timesheets'
-import StartDate from './components/StartDate.iOS'
-import EndDate from './components/EndDate.iOS'
+import StartDate from './components/StartDate'
+import EndDate from './components/EndDate'
 import PeriodFilters from './components/PeriodFilters'
 import Sort from './components/Sort'
 import Nav from './components/Nav'
@@ -57,7 +57,9 @@ function mapStateToProps(state) {
     period,
     isFetching,
     times,
-    calendar
+    calendar,
+    checkingCookie,
+    cookieValid
   } = state.timesheets
 
   return {
@@ -68,6 +70,8 @@ function mapStateToProps(state) {
     isFetching,
     sortByValues,
     calendar,
+    checkingCookie,
+    cookieValid
     times: sort(times, sortBy)
   }
 }

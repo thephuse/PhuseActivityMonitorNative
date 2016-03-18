@@ -18,6 +18,8 @@ import Modal from './Modal'
 
 import periodValues from '../helpers/periodValues'
 
+const periods = periodValues.map(periodValue => <Picker.Item key={periodValue.value} label={periodValue.title} value={periodValue.value} />)
+
 class PeriodFilters extends Component {
 
   setPeriod(value) {
@@ -33,8 +35,6 @@ class PeriodFilters extends Component {
       endDate,
       period
     } = this.props
-
-    const periods = periodValues.map(periodValue => <Picker.Item key={periodValue.value} label={periodValue.title} value={periodValue.value} />)
 
     return (
       <Modal>

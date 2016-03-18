@@ -43,16 +43,30 @@ class Modal extends Component {
 
     return (
       <Animated.View style={[ styles.modal, {opacity: this.state.opacity} ]}>
-        <BlurView blurType="light" style={styles.modal}>
-          <Animated.View style={[ styles.rootView, {transform: [{translateY: this.state.offset}]} ]}>
-            <View style={styles.innerView}>{children}</View>
-            <Button
-              style={styles.button}
-              onPress={this.closeModal.bind(this)}>
-              Done
-            </Button>
-          </Animated.View>
-        </BlurView>
+        {(Platform.OS === 'ios'
+        ?
+          <BlurView blurType="light" style={styles.modal}>
+            <Animated.View style={[ styles.rootView, {transform: [{translateY: this.state.offset}]} ]}>
+              <View style={styles.innerView}>{children}</View>
+              <Button
+                style={styles.button}
+                onPress={this.closeModal.bind(this)}>
+                Done
+              </Button>
+            </Animated.View>
+          </BlurView>
+        :
+          <View style={[styles.modal, styles.androidModal]}>
+            <Animated.View style={[ styles.rootView, {transform: [{translateY: this.state.offset}]} ]}>
+              <View style={styles.innerView}>{children}</View>
+              <Button
+                style={styles.button}
+                onPress={this.closeModal.bind(this)}>
+                Done
+              </Button>
+            </Animated.View>
+          </View>
+        )}
       </Animated.View>
     )
   }

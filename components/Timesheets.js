@@ -2,10 +2,10 @@ import React, {
   Component,
   View,
   PropTypes,
+  Platform,
   Text,
   ScrollView,
-  RefreshControl,
-  WebView
+  RefreshControl
 } from 'react-native'
 import moment from 'moment'
 
@@ -21,8 +21,15 @@ import User from '../components/User'
 import NavBar from '../components/NavBar'
 import PeriodStatistics from './PeriodStatistics'
 
+const ios = Platform.OS === 'ios'
+
 class Timesheets extends Component {
-  
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchTimes())
+  }
+
   refresh() {
     const { dispatch } = this.props
     dispatch(fetchTimes())
@@ -48,15 +55,16 @@ class Timesheets extends Component {
       <HarvestWrapper {...this.props}>
         <View style={styles.rootView}>
           <PeriodStatistics {...this.props} />
+          {(times.length ? <User header={true} /> : null )}
           <ScrollView
             style={styles.userList}
             refreshControl={
               <RefreshControl
                 refreshing={isFetching}
                 onRefresh={this.refresh.bind(this)}
+                colors={['#2B8CBE']}
               />
             }>
-            {(times.length ? <User header={true} /> : null )}
             {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
           </ScrollView>
           <NavBar {...this.props} />

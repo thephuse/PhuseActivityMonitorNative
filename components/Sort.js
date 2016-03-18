@@ -10,6 +10,8 @@ import Modal from './Modal'
 import { sortBy } from '../actions'
 import sortByValues from '../helpers/sortByValues'
 
+const sort = sortByValues.map(sortByValue => <Picker.Item key={sortByValue.value} label={sortByValue.title} value={sortByValue.value} />)
+
 class Sort extends Component {
 
   setSortBy(value) {
@@ -21,8 +23,6 @@ class Sort extends Component {
     const {
       sortBy
     } = this.props
-
-    const sort = sortByValues.map(sortByValue => <Picker.Item key={sortByValue.value} label={sortByValue.title} value={sortByValue.value} />)
 
     return (
       <Modal>

@@ -1,3 +1,4 @@
+import { Platform } from 'react-native'
 import moment from 'moment'
 import dateFormat from '../helpers/dateFormat'
 import { serverUrl } from '../config'
@@ -6,9 +7,14 @@ export const LAYOUT = 'LAYOUT'
 export const SORT_BY = 'SORT_BY'
 export const SET_DATES = 'SET_DATES'
 export const SET_PERIOD = 'SET_PERIOD'
-export const SET_COOKIE = 'SET_COOKIE'
+export const OPEN_NAV = 'OPEN_NAV'
+export const CLOSE_NAV = 'CLOSE_NAV'
 export const REQUEST_TIMES = 'REQUEST_TIMES'
 export const RECEIVE_TIMES = 'RECEIVE_TIMES'
+export const CHECKING_COOKIE = 'CHECKING_COOKIE'
+export const NOT_CHECKING_COOKIE = 'NOT_CHECKING_COOKIE'
+export const VALIDATE_COOKIE = 'VALIDATE_COOKIE'
+export const INVALIDATE_COOKIE = 'INVALIDATE_COOKIE'
 
 export function layout(dimensions) {
   return {
@@ -44,6 +50,34 @@ export function setPeriod(period) {
   return {
     type: SET_PERIOD,
     period
+  }
+}
+
+export function validateCookie() {
+  return {
+    type: VALIDATE_COOKIE,
+    cookieValid: true
+  }
+}
+
+export function invalidateCookie() {
+  return {
+    type: INVALIDATE_COOKIE,
+    cookieValid: false
+  }
+}
+
+export function openNav() {
+  return {
+    type: OPEN_NAV,
+    nav: true
+  }
+}
+
+export function closeNav() {
+  return {
+    type: OPEN_NAV,
+    nav: false
   }
 }
 
@@ -90,25 +124,21 @@ export function setDates(selectedDate = new Date(), startOrEnd = 'start') {
   }
 }
 
-/**
- * setTimeout here is a dirty workaround to a race condition
- * related to the `reloading` check interval, that's evidently
- * built into React's RefreshControl component. 250ms is the
- * minimum value that circumvents the loader being shown when
- * content is loaded from a cache.
- */
 export function fetchTimes() {
   return (dispatch, getState) => {
     const { startDate, endDate } = getState().timesheets
     dispatch(requestTimes())
     return fetch(`${serverUrl}/times/${startDate}/${endDate}`, {credentials: 'include'})
-      // .then(response => console.log(response))
       .then(response => response.json())
       .then(json => json.map(item => item.user).filter(item => (item.total > 0)))
-      .then(function(times) {
-        setTimeout(function() {
+      .then((times) => {
+        dispatch(validateCookie())
+        if (Platform.OS === 'ios') {
+          setTimeout(() => { dispatch(receiveTimes(times)) }, 250)
+        } else {
           dispatch(receiveTimes(times))
-        }, 250)
+        }
       })
+      .catch(() => dispatch(invalidateCookie()))
   }
 }

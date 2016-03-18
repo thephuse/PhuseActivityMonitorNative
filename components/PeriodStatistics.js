@@ -2,13 +2,19 @@ import React, {
   Component,
   PropTypes,
   View,
-  Text
+  Text,
+  Platform,
+  StatusBar
 } from 'react-native'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { CircularProgress } from 'react-native-circular-progress'
 import { weekDays } from 'moment-business'
 import moment from 'moment'
 
 import { workingHours } from '../config'
+
+const ios = Platform.OS === 'ios'
+const tintColor = (ios? '#2B8CBE' : '#FFFFFF')
+const backgroundColor = (ios ? '#DFDFDF' : 'rgba(0,0,0,0.2)')
 
 const getBillablePercentage = function(timesheets) {
   let total = 0
@@ -58,43 +64,49 @@ class PeriodStatistics extends Component {
     const maximumHours = ((fromDate.isSame(toDate) ? workingHours : fromDate.weekDays(toDate, 'd') * workingHours) * times.length)
 
     return (
-      <View style={styles.periodStatistics}>
+      <View
+        style={styles.periodStatistics}
+        elevation={4}>
+        <StatusBar
+          backgroundColor="#2B8CBE"
+          barStyle="light-content"
+        />
         <View style={styles.periodStatisticValues}>
 
           <View style={styles.periodStatistic}>
-            <AnimatedCircularProgress
+            <CircularProgress
               key="total"
               size={90}
               width={2}
               fill={(total === 0 ? 0 : Math.round(total / maximumHours * 100))}
-              tintColor="#2B8CBE"
-              backgroundColor="#DFDFDF"
+              tintColor={tintColor}
+              backgroundColor={backgroundColor}
               rotation={0}
             />
             {renderFigures(total.toFixed(1), 'TOTAL')}
           </View>
 
           <View style={styles.periodStatistic}>
-            <AnimatedCircularProgress
+            <CircularProgress
               key="billableTotal"
               size={90}
               width={2}
               fill={(billableTotal === 0 ? 0 : Math.round(billableTotal / maximumHours * 100))}
-              tintColor="#2B8CBE"
-              backgroundColor="#DFDFDF"
+              tintColor={tintColor}
+              backgroundColor={backgroundColor}
               rotation={0}
             />
             {renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
           </View>
 
           <View style={styles.periodStatistic}>
-            <AnimatedCircularProgress
+            <CircularProgress
               key="percentage"
               size={90}
               width={2}
               fill={Math.round(billablePercentage)}
-              tintColor="#2B8CBE"
-              backgroundColor="#DFDFDF"
+              tintColor={tintColor}
+              backgroundColor={backgroundColor}
               rotation={0}
             />
             {renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
@@ -125,10 +137,11 @@ const styles = {
   periodStatistics: {
     flex: 0,
     flexDirection: 'column',
-    paddingTop: 30,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#efefef'
+    paddingTop: (ios ? 30 : 15),
+    paddingBottom: (ios ? 10 : 0),
+    borderBottomColor: '#efefef',
+    borderBottomWidth: (ios ? 1 : 0),
+    backgroundColor: (ios ? 'white' : '#2B8CBE')
   },
   periodStatisticValues: {
     flex: 0,
@@ -142,17 +155,19 @@ const styles = {
     justifyContent: 'center'
   },
   periodStatisticValue: {
-    fontSize: 24,
-    fontWeight: '200',
     backgroundColor: 'transparent',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: (ios ? 24 : 32),
+    fontWeight: (ios ? '200' : '100'),
+    color: (ios ? 'black' : 'white')
   },
   periodStatisticKey: {
     fontWeight: '200',
-    fontSize: 10,
     letterSpacing: 0.5,
     backgroundColor: 'transparent',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: (ios ? 10 : 14),
+    color: (ios ? 'black' : 'white')
   },
   inlinePercentageText: {
     position: 'absolute',
@@ -171,7 +186,10 @@ const styles = {
     justifyContent: 'center'
   },
   period: {
-    flex: 0
+    flex: 0,
+    marginTop: (ios ? 0 : 15),
+    paddingTop: (ios ? 0 : 10),
+    backgroundColor: (ios ? 'transparent' : 'rgba(0,0,0,0.1)')
   },
   periodValue: {
     flex: 1,
@@ -180,8 +198,8 @@ const styles = {
     paddingRight: 15,
     paddingBottom: 0,
     paddingTop: 10,
-    fontSize: 15,
     fontWeight: '200',
-    color: '#666666'
+    fontSize: (ios ? 15 : 18),
+    color: (ios ? '#666666' : 'white')
   }
 }
