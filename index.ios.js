@@ -58,7 +58,6 @@ function mapStateToProps(state) {
     isFetching,
     times,
     calendar,
-    checkingCookie,
     cookieValid
   } = state.timesheets
 
@@ -70,7 +69,6 @@ function mapStateToProps(state) {
     isFetching,
     sortByValues,
     calendar,
-    checkingCookie,
     cookieValid
     times: sort(times, sortBy)
   }

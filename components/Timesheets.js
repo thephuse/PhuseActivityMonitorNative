@@ -15,10 +15,10 @@ import {
   fetchTimes
 } from '../actions'
 
-import HarvestWrapper from '../components/HarvestWrapper'
-import Nav from '../components/Nav'
-import User from '../components/User'
-import NavBar from '../components/NavBar'
+import Nav from './Nav'
+import User from './User'
+import NavBar from './NavBar'
+import HarvestWrapper from './HarvestWrapper'
 import PeriodStatistics from './PeriodStatistics'
 
 const ios = Platform.OS === 'ios'
@@ -44,7 +44,8 @@ class Timesheets extends Component {
       isFetching,
       times,
       sortBy,
-      period
+      period,
+      nav
     } = this.props
 
     const noResultsDay = <Text style={styles.noResults}>No times have been logged for {moment(startDate).format('MMMM Do, YYYY')}.</Text>
@@ -68,6 +69,7 @@ class Timesheets extends Component {
             {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
           </ScrollView>
           <NavBar {...this.props} />
+          {(nav ? <Nav {...this.props} /> : null)}
         </View>
       </HarvestWrapper>
     )

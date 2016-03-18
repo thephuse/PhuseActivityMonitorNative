@@ -76,7 +76,7 @@ export function openNav() {
 
 export function closeNav() {
   return {
-    type: OPEN_NAV,
+    type: CLOSE_NAV,
     nav: false
   }
 }

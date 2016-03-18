@@ -70,7 +70,7 @@ class NavBar extends Component {
           containerStyle={styles.navButtonContainer}
           style={styles.navButton}
           onPress={this.openNav.bind(this)}>
-            More Options
+            Change Dates
         </Button>
 
         <Button

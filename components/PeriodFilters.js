@@ -1,5 +1,6 @@
 import React, {
   Component,
+  Platform,
   PropTypes,
   View,
   Picker
@@ -10,8 +11,7 @@ import moment from 'moment'
 import {
   setDates,
   setPeriod,
-  fetchTimes,
-  openCalendar
+  fetchTimes
 } from '../actions'
 
 import Modal from './Modal'
@@ -19,6 +19,8 @@ import Modal from './Modal'
 import periodValues from '../helpers/periodValues'
 
 const periods = periodValues.map(periodValue => <Picker.Item key={periodValue.value} label={periodValue.title} value={periodValue.value} />)
+
+const ios = Platform.OS === 'ios'
 
 class PeriodFilters extends Component {
 
@@ -36,15 +38,15 @@ class PeriodFilters extends Component {
       period
     } = this.props
 
-    return (
-      <Modal>
-        <Picker
-          selectedValue={period}
-          onValueChange={this.setPeriod.bind(this)}>
-          {periods}
-        </Picker>
-      </Modal>
+    const picker = (
+      <Picker
+        selectedValue={period}
+        onValueChange={this.setPeriod.bind(this)}>
+        {periods}
+      </Picker>
     )
+
+    return (ios ? <Modal>{picker}</Modal> : picker)
   }
 
 }

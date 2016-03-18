@@ -26,7 +26,8 @@ const initialState = {
   startDate: moment().format(dateFormat),
   endDate: moment().format(dateFormat),
   times: [],
-  cookieValid: true
+  cookieValid: true,
+  nav: false
 }
 
 function timesheets(state = initialState, action) {

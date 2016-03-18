@@ -1,5 +1,6 @@
 import React, {
   Component,
+  Platform,
   PropTypes,
   View,
   Picker
@@ -11,6 +12,8 @@ import { sortBy } from '../actions'
 import sortByValues from '../helpers/sortByValues'
 
 const sort = sortByValues.map(sortByValue => <Picker.Item key={sortByValue.value} label={sortByValue.title} value={sortByValue.value} />)
+
+const ios = Platform.OS === 'ios'
 
 class Sort extends Component {
 
@@ -24,15 +27,15 @@ class Sort extends Component {
       sortBy
     } = this.props
 
-    return (
-      <Modal>
-        <Picker
-          selectedValue={sortBy}
-          onValueChange={this.setSortBy.bind(this)}>
-          {sort}
-        </Picker>
-      </Modal>
+    const picker = (
+      <Picker
+        selectedValue={sortBy}
+        onValueChange={this.setSortBy.bind(this)}>
+        {sort}
+      </Picker>
     )
+
+    return (ios ? <Modal>{picker}</Modal> : picker)
   }
 
 }
