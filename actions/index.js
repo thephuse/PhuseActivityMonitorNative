@@ -17,13 +17,6 @@ export function layout(dimensions) {
   }
 }
 
-export function setCookie(cookie) {
-  return {
-    type: SET_COOKIE,
-    cookie
-  }
-}
-
 export function requestTimes() {
   return {
     type: REQUEST_TIMES,
@@ -38,19 +31,6 @@ export function receiveTimes(times) {
     isFetching: false,
     receivedAt: Date.now()
   }
-}
-
-export function generateDates(state) {
-  const { startDate, endDate } = state.timesheets
-  return {
-    startDate,
-    endDate
-  }
-}
-
-export function getCookie(state) {
-  const { cookie } = state.timesheets
-  return cookie
 }
 
 export function sortBy(sort) {
@@ -119,11 +99,10 @@ export function setDates(selectedDate = new Date(), startOrEnd = 'start') {
  */
 export function fetchTimes() {
   return (dispatch, getState) => {
-    const state = getState()
-    const dates = generateDates(state)
-    const cookie = getCookie(state)
+    const { startDate, endDate } = getState().timesheets
     dispatch(requestTimes())
-    return fetch(`${serverUrl}/times/${dates.startDate}/${dates.endDate}`, { headers: { cookie: cookie } })
+    return fetch(`${serverUrl}/times/${startDate}/${endDate}`, {credentials: 'include'})
+      // .then(response => console.log(response))
       .then(response => response.json())
       .then(json => json.map(item => item.user).filter(item => (item.total > 0)))
       .then(function(times) {

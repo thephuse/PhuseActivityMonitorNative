@@ -3,44 +3,43 @@ import React, {
   View,
   PropTypes,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated,
+  Dimensions
 } from 'react-native'
 import moment from 'moment'
-
 import { Actions } from 'react-native-router-flux'
-
 import capitalize from '../helpers/capitalize'
+import sortByValues from '../helpers/sortByValues'
+
 import {
   setDates,
   fetchTimes
 } from '../actions'
 
+const { height: deviceHeight } = Dimensions.get('window')
+
 class Nav extends Component {
 
-  setDate(modifier) {
-    const { startDate, period, dispatch } = this.props
-    let newDate
-    switch (period) {
-      case 'YEAR' :
-        newDate = moment(startDate)[modifier](1, 'years')
-        break
-      case 'MONTH' :
-        newDate = moment(startDate)[modifier](1, 'months')
-        break
-      case 'WEEK' :
-        newDate = moment(startDate)[modifier](1, 'weeks')
-        break
-      case 'DAY' :
-        newDate = moment(startDate)[modifier](1, 'days')
-        break
-      case 'CUSTOM' :
-      default :
-        newDate = moment(startDate)[modifier](1, 'days')
-        dispatch(setPeriod('DAY'))
-        break
+  constructor(props) {
+    super(props)
+    this.state = {
+      offset: new Animated.Value(deviceHeight),
+      opacity: new Animated.Value(0)
     }
-    dispatch(setDates(newDate))
-    dispatch(fetchTimes())
+  }
+
+  componentDidMount() {
+    const { offset, opacity } = this.state
+    Animated.timing(offset, { duration: 200, toValue: 0 }).start()
+    Animated.timing(opacity, { duration: 200, toValue: 1 }).start()
+  }
+
+  closeModal() {
+    const { offset, opacity } = this.state
+    const { dismiss } = Actions
+    Animated.timing(offset, { duration: 200, toValue: deviceHeight }).start(dismiss)
+    Animated.timing(opacity, { duration: 200, toValue: 0 }).start(dismiss)
   }
 
   render() {
@@ -51,61 +50,64 @@ class Nav extends Component {
       sortBy
     } = this.props
 
-    const fromDate = moment(startDate)
-    const toDate = moment(endDate)
-    const sortText = sortBy.split('_')
-    const sortTextAbove = capitalize(sortText.shift())
-    const sortTextBelow = sortText.pop()
-
     return (
-      <View
-        style={styles.navButtons}
+      <Animated.View
+        style={[styles.overlay, {opacity: this.state.opacity}]}
         shouldRasterizeIOS={true}>
 
         <TouchableHighlight
-          style={styles.navButtonHighlight}
-          underlayColor="#2B8CBE"
-          onPress={Actions.startDate}>
-          <View style={styles.navButton}>
-            <Text style={styles.navButtonKey}>FROM</Text>
-            <Text style={styles.navButtonValue}>{fromDate.format('MMM Do')}</Text>
-            <Text style={styles.navButtonKey}>{fromDate.format('YYYY')}</Text>
-          </View>
+          style={styles.overlayDismissal}
+          underlayColor="rgba(0,0,0,0)"
+          onPress={this.closeModal.bind(this)}>
+          <View />
         </TouchableHighlight>
 
-        <TouchableHighlight
-          style={styles.navButtonHighlight}
-          underlayColor="#2B8CBE"
-          onPress={Actions.endDate}>
-          <View style={styles.navButton}>
-            <Text style={styles.navButtonKey}>TO</Text>
-            <Text style={styles.navButtonValue}>{toDate.format('MMM Do')}</Text>
-            <Text style={styles.navButtonKey}>{toDate.format('YYYY')}</Text>
-          </View>
-        </TouchableHighlight>
+        <Animated.View
+          style={[styles.navButtons, {transform: [{translateY: this.state.offset}]}]}>
 
-        <TouchableHighlight
-          style={styles.navButtonHighlight}
-          underlayColor="#2B8CBE"
-          onPress={Actions.period}>
-          <View style={styles.navButton}>
-            <Text style={styles.navButtonKey}>PERIOD</Text>
-            <Text style={styles.navButtonValue}>{capitalize(period)}</Text>
-          </View>
-        </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.navButtonHighlight}
+            underlayColor="#2B8CBE"
+            onPress={Actions.startDate}>
+            <View style={[styles.navButton, {borderTopWidth: 0}]}>
+              <Text style={styles.navButtonKey}>From</Text>
+              <Text style={styles.navButtonValue}>{moment(startDate).format('MMMM Do, YYYY')}</Text>
+            </View>
+          </TouchableHighlight>
 
-        <TouchableHighlight
-          style={styles.navButtonHighlight}
-          underlayColor="#2B8CBE"
-          onPress={Actions.sort}>
-          <View style={styles.navButton}>
-            <Text style={styles.navButtonKey}>SORT BY</Text>
-            <Text style={styles.navButtonValue}>{sortTextAbove}</Text>
-            <Text style={styles.navButtonKey}>{sortTextBelow}</Text>
-          </View>
-        </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.navButtonHighlight}
+            underlayColor="#2B8CBE"
+            onPress={Actions.endDate}>
+            <View style={styles.navButton}>
+              <Text style={styles.navButtonKey}>To</Text>
+              <Text style={styles.navButtonValue}>{moment(endDate).format('MMMM Do, YYYY')}</Text>
+            </View>
+          </TouchableHighlight>
 
-      </View>
+          <TouchableHighlight
+            style={styles.navButtonHighlight}
+            underlayColor="#2B8CBE"
+            onPress={Actions.period}>
+            <View style={styles.navButton}>
+              <Text style={styles.navButtonKey}>Period</Text>
+              <Text style={styles.navButtonValue}>{capitalize(period)}</Text>
+            </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.navButtonHighlight}
+            underlayColor="#2B8CBE"
+            onPress={Actions.sort}>
+            <View style={styles.navButton}>
+              <Text style={styles.navButtonKey}>Sort By</Text>
+              <Text style={styles.navButtonValue}>{sortByValues.filter(sb => (sortBy === sb.value))[0].title}</Text>
+            </View>
+          </TouchableHighlight>
+
+        </Animated.View>
+
+      </Animated.View>
     )
   }
 
@@ -121,11 +123,27 @@ Nav.propTypes = {
 }
 
 const styles = {
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)'
+  },
+  overlayDismissal: {
+    flex: 1
+  },
   navButtons: {
     flex: 0,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: 'white',
     shadowColor: 'black',
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
+    paddingBottom: 5,
     shadowOpacity: 0.1,
     shadowRadius: 12,
     shadowOffset: {
@@ -137,17 +155,24 @@ const styles = {
     flex: 1
   },
   navButton: {
-    padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: '#efefef'
   },
   navButtonKey: {
-    fontWeight: '200',
-    fontSize: 10,
-    letterSpacing: 0.5,
-    textAlign: 'center'
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontWeight: '600',
+    fontSize: 14,
+    textAlign: 'left',
+    flex: 0.6
   },
   navButtonValue: {
-    fontWeight: '200',
-    textAlign: 'center'
+    padding: 10,
+    fontWeight: '300',
+    fontSize: 14,
+    textAlign: 'left',
+    flex: 1.4
   }
 }

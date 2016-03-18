@@ -59,44 +59,57 @@ class PeriodStatistics extends Component {
 
     return (
       <View style={styles.periodStatistics}>
+        <View style={styles.periodStatisticValues}>
 
-        <View style={styles.periodStatistic}>
-          <AnimatedCircularProgress
-            key="total"
-            size={90}
-            width={2}
-            fill={(total === 0 ? 0 : Math.round(total / maximumHours * 100))}
-            tintColor="#2B8CBE"
-            backgroundColor="#DFDFDF"
-            rotation={0}
-          />
-          {renderFigures(total.toFixed(1), 'TOTAL')}
+          <View style={styles.periodStatistic}>
+            <AnimatedCircularProgress
+              key="total"
+              size={90}
+              width={2}
+              fill={(total === 0 ? 0 : Math.round(total / maximumHours * 100))}
+              tintColor="#2B8CBE"
+              backgroundColor="#DFDFDF"
+              rotation={0}
+            />
+            {renderFigures(total.toFixed(1), 'TOTAL')}
+          </View>
+
+          <View style={styles.periodStatistic}>
+            <AnimatedCircularProgress
+              key="billableTotal"
+              size={90}
+              width={2}
+              fill={(billableTotal === 0 ? 0 : Math.round(billableTotal / maximumHours * 100))}
+              tintColor="#2B8CBE"
+              backgroundColor="#DFDFDF"
+              rotation={0}
+            />
+            {renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
+          </View>
+
+          <View style={styles.periodStatistic}>
+            <AnimatedCircularProgress
+              key="percentage"
+              size={90}
+              width={2}
+              fill={Math.round(billablePercentage)}
+              tintColor="#2B8CBE"
+              backgroundColor="#DFDFDF"
+              rotation={0}
+            />
+            {renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
+          </View>
+
         </View>
 
-        <View style={styles.periodStatistic}>
-          <AnimatedCircularProgress
-            key="billableTotal"
-            size={90}
-            width={2}
-            fill={(billableTotal === 0 ? 0 : Math.round(billableTotal / maximumHours * 100))}
-            tintColor="#2B8CBE"
-            backgroundColor="#DFDFDF"
-            rotation={0}
-          />
-          {renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
-        </View>
-
-        <View style={styles.periodStatistic}>
-          <AnimatedCircularProgress
-            key="percentage"
-            size={90}
-            width={2}
-            fill={Math.round(billablePercentage)}
-            tintColor="#2B8CBE"
-            backgroundColor="#DFDFDF"
-            rotation={0}
-          />
-          {renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
+        <View style={styles.period}>
+          <Text style={styles.periodValue}>
+            {moment(startDate).isSame(endDate) ?
+              moment(startDate).format('MMMM Do YYYY')
+            :
+              `${moment(startDate).format('MMMM Do YYYY')} - ${moment(endDate).format('MMMM Do YYYY')}`
+            }
+          </Text>
         </View>
 
       </View>
@@ -111,12 +124,16 @@ export default PeriodStatistics
 const styles = {
   periodStatistics: {
     flex: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 40,
-    paddingBottom: 20,
+    flexDirection: 'column',
+    paddingTop: 30,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#efefef'
+  },
+  periodStatisticValues: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   periodStatistic: {
     flex: 1,
@@ -152,5 +169,19 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  period: {
+    flex: 0
+  },
+  periodValue: {
+    flex: 1,
+    textAlign: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 0,
+    paddingTop: 10,
+    fontSize: 15,
+    fontWeight: '200',
+    color: '#666666'
   }
 }

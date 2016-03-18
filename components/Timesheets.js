@@ -4,7 +4,8 @@ import React, {
   PropTypes,
   Text,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  WebView
 } from 'react-native'
 import moment from 'moment'
 
@@ -14,20 +15,14 @@ import {
   fetchTimes
 } from '../actions'
 
+import HarvestWrapper from '../components/HarvestWrapper'
 import Nav from '../components/Nav'
 import User from '../components/User'
+import NavBar from '../components/NavBar'
 import PeriodStatistics from './PeriodStatistics'
 
 class Timesheets extends Component {
-
-  componentDidMount() {
-    const { dispatch } = this.props
-    oAuth(cookie => {
-      dispatch(setCookie(cookie))
-      dispatch(fetchTimes())
-    })
-  }
-
+  
   refresh() {
     const { dispatch } = this.props
     dispatch(fetchTimes())
@@ -50,21 +45,23 @@ class Timesheets extends Component {
     const items = times.map((user, ind) => <User key={user.id} index={ind} {...user} />)
 
     return (
-      <View style={styles.rootView}>
-        <PeriodStatistics {...this.props} />
-        <ScrollView
-          style={styles.userList}
-          refreshControl={
-            <RefreshControl
-              refreshing={isFetching}
-              onRefresh={this.refresh.bind(this)}
-            />
-          }>
-          {(times.length ? <User header={true} /> : null )}
-          {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
-        </ScrollView>
-        <Nav {...this.props} />
-      </View>
+      <HarvestWrapper {...this.props}>
+        <View style={styles.rootView}>
+          <PeriodStatistics {...this.props} />
+          <ScrollView
+            style={styles.userList}
+            refreshControl={
+              <RefreshControl
+                refreshing={isFetching}
+                onRefresh={this.refresh.bind(this)}
+              />
+            }>
+            {(times.length ? <User header={true} /> : null )}
+            {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
+          </ScrollView>
+          <NavBar {...this.props} />
+        </View>
+      </HarvestWrapper>
     )
 
   }
@@ -98,5 +95,12 @@ const styles = {
     lineHeight: 26,
     fontWeight: '200',
     textAlign: 'center'
+  },
+  absoluteButton: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 0
   }
 }

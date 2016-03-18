@@ -25,6 +25,7 @@ import StartDate from './components/StartDate.iOS'
 import EndDate from './components/EndDate.iOS'
 import PeriodFilters from './components/PeriodFilters'
 import Sort from './components/Sort'
+import Nav from './components/Nav'
 
 const store = configureStore()
 
@@ -40,6 +41,7 @@ class PhuseActivityMonitorNative extends Component {
           <Route name="endDate" component={connect(mapStateToProps)(EndDate)} type="modal" title="End Date" />
           <Route name="period" component={connect(mapStateToProps)(PeriodFilters)} type="modal" title="Period" />
           <Route name="sort" component={connect(mapStateToProps)(Sort)} type="modal" title="Sort" />
+          <Route name="nav" component={connect(mapStateToProps)(Nav)} type="modal" title="Nav" />
         </Router>
       </Provider>
     )
