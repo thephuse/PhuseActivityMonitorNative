@@ -14,7 +14,8 @@ import {
 } from '../config'
 
 import {
-  validateCookie
+  validateCookie,
+  fetchTimes
 } from '../actions'
 
 class HarvestWrapper extends Component {

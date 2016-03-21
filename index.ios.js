@@ -69,7 +69,7 @@ function mapStateToProps(state) {
     isFetching,
     sortByValues,
     calendar,
-    cookieValid
+    cookieValid,
     times: sort(times, sortBy)
   }
 }
