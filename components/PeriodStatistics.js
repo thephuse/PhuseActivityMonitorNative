@@ -32,25 +32,28 @@ const getBillablePercentage = function(timesheets) {
   }
 }
 
-const renderFigures = function(figure, text) {
-  return (
-    <View style={styles.inlinePercentageText}>
-      <View style={styles.inlinePercentageTextPositioner}>
-        <Text style={styles.periodStatisticValue}>{figure}</Text>
-        <Text style={styles.periodStatisticKey}>{text}</Text>
-      </View>
-    </View>
-  )
-}
-
 class PeriodStatistics extends Component {
+
+  renderFigures(figure, text) {
+    const { isFetching } = this.props
+
+    return (
+      <View style={styles.inlinePercentageText}>
+        <View style={styles.inlinePercentageTextPositioner}>
+          <Text style={styles.periodStatisticValue}>{isFetching ? '--' : figure}</Text>
+          <Text style={styles.periodStatisticKey}>{text}</Text>
+        </View>
+      </View>
+    )
+  }
 
   render() {
 
     const {
       times,
       startDate,
-      endDate
+      endDate,
+      isFetching
     } = this.props
 
     const {
@@ -64,13 +67,13 @@ class PeriodStatistics extends Component {
     const maximumHours = ((fromDate.isSame(toDate) ? workingHours : fromDate.weekDays(toDate, 'd') * workingHours) * times.length)
 
     return (
-      <View
-        style={styles.periodStatistics}
-        elevation={4}>
+      <View style={styles.periodStatistics}>
+
         <StatusBar
           backgroundColor="#2B8CBE"
           barStyle="light-content"
         />
+
         <View style={styles.periodStatisticValues}>
 
           <View style={styles.periodStatistic}>
@@ -78,12 +81,12 @@ class PeriodStatistics extends Component {
               key="total"
               size={90}
               width={2}
-              fill={(total === 0 ? 0 : Math.round(total / maximumHours * 100))}
+              fill={(total === 0 || isFetching ? 0 : Math.round(total / maximumHours * 100))}
               tintColor={tintColor}
               backgroundColor={backgroundColor}
               rotation={0}
             />
-            {renderFigures(total.toFixed(1), 'TOTAL')}
+            {this.renderFigures(total.toFixed(1), 'TOTAL')}
           </View>
 
           <View style={styles.periodStatistic}>
@@ -91,12 +94,12 @@ class PeriodStatistics extends Component {
               key="billableTotal"
               size={90}
               width={2}
-              fill={(billableTotal === 0 ? 0 : Math.round(billableTotal / maximumHours * 100))}
+              fill={(billableTotal === 0 || isFetching ? 0 : Math.round(billableTotal / maximumHours * 100))}
               tintColor={tintColor}
               backgroundColor={backgroundColor}
               rotation={0}
             />
-            {renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
+            {this.renderFigures(billableTotal.toFixed(1), 'BILLABLE')}
           </View>
 
           <View style={styles.periodStatistic}>
@@ -104,12 +107,12 @@ class PeriodStatistics extends Component {
               key="percentage"
               size={90}
               width={2}
-              fill={Math.round(billablePercentage)}
+              fill={isFetching ? 0 : Math.round(billablePercentage)}
               tintColor={tintColor}
               backgroundColor={backgroundColor}
               rotation={0}
             />
-            {renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
+            {this.renderFigures(`${Math.round(billablePercentage)}%`, 'RATIO')}
           </View>
 
         </View>

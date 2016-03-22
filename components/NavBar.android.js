@@ -10,17 +10,11 @@ import { Actions } from 'react-native-router-flux'
 
 import {
   setDates,
-  fetchTimes,
-  openNav,
-  closeNav
+  setPeriod,
+  fetchTimes
 } from '../actions'
 
 class NavBar extends Component {
-
-  openNav() {
-    const { dispatch } = this.props
-    dispatch(openNav())
-  }
 
   setDate(modifier) {
     const { startDate, period, dispatch } = this.props
@@ -55,9 +49,7 @@ class NavBar extends Component {
     } = this.props
 
     return (
-      <View
-        style={styles.navBar}
-        elevation={15}>
+      <View style={styles.navBar}>
 
         <Button
           containerStyle={styles.navButtonContainer}
@@ -69,7 +61,7 @@ class NavBar extends Component {
         <Button
           containerStyle={styles.navButtonContainer}
           style={styles.navButton}
-          onPress={this.openNav.bind(this)}>
+          onPress={Actions.nav}>
             Change Dates
         </Button>
 

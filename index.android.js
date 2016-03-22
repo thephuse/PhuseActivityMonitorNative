@@ -16,9 +16,8 @@ import {
 } from 'react-native-router-flux'
 
 import configureStore from './store'
-import sort from './helpers/sort'
-import sortByValues from './helpers/sortByValues'
 import Timesheets from './components/Timesheets'
+import Nav from './components/Nav'
 
 const store = configureStore()
 
@@ -29,6 +28,7 @@ class PhuseActivityMonitorNative extends Component {
       <Provider store={store}>
         <Router hideNavBar={true}>
           <Route name="index" component={connect(mapStateToProps)(Timesheets)} initial={true} title="Activity" />
+          <Route name="nav" component={connect(mapStateToProps)(Nav)} type="modal" title="Nav" />
         </Router>
       </Provider>
     )
@@ -37,30 +37,7 @@ class PhuseActivityMonitorNative extends Component {
 }
 
 function mapStateToProps(state) {
-  const {
-    sortBy,
-    startDate,
-    endDate,
-    period,
-    isFetching,
-    times,
-    calendar,
-    cookieValid,
-    nav
-  } = state.timesheets
-
-  return {
-    sortBy,
-    startDate,
-    endDate,
-    period,
-    isFetching,
-    sortByValues,
-    calendar,
-    cookieValid,
-    nav,
-    times: sort(times, sortBy)
-  }
+  return state.timesheets
 }
 
 AppRegistry.registerComponent('PhuseActivityMonitorNative', () => PhuseActivityMonitorNative);

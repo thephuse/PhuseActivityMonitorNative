@@ -4,6 +4,7 @@ import React, {
   PropTypes,
   Text,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   Animated,
   Dimensions
 } from 'react-native'
@@ -50,9 +51,14 @@ class Nav extends Component {
       sortBy
     } = this.props
 
+    const {
+      opacity,
+      offset
+    } = this.state
+
     return (
       <Animated.View
-        style={[styles.overlay, {opacity: this.state.opacity}]}
+        style={[styles.overlay, {opacity: opacity}]}
         shouldRasterizeIOS={true}>
 
         <TouchableHighlight
@@ -63,7 +69,7 @@ class Nav extends Component {
         </TouchableHighlight>
 
         <Animated.View
-          style={[styles.navButtons, {transform: [{translateY: this.state.offset}]}]}>
+          style={[styles.navButtons, {transform: [{translateY: offset}]}]}>
 
           <TouchableHighlight
             style={styles.navButtonHighlight}

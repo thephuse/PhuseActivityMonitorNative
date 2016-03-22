@@ -9,15 +9,12 @@ import React, {
 } from 'react-native'
 import moment from 'moment'
 
-import oAuth from '../helpers/oAuth'
-import {
-  setCookie,
-  fetchTimes
-} from '../actions'
+import sort from '../helpers/sort'
+import { fetchTimes } from '../actions'
 
-import Nav from './Nav'
 import User from './User'
 import NavBar from './NavBar'
+import LoadingText from './LoadingText'
 import HarvestWrapper from './HarvestWrapper'
 import PeriodStatistics from './PeriodStatistics'
 
@@ -44,13 +41,11 @@ class Timesheets extends Component {
       isFetching,
       times,
       sortBy,
-      period,
-      nav
+      period
     } = this.props
 
-    const noResultsDay = <Text style={styles.noResults}>No times have been logged for {moment(startDate).format('MMMM Do, YYYY')}.</Text>
-    const noResultsPeriod = <Text style={styles.noResults}>No times have been logged between {moment(startDate).format('MMMM Do, YYYY')} and {moment(endDate).format('MMMM Do, YYYY')}.</Text>
-    const items = times.map((user, ind) => <User key={user.id} index={ind} {...user} />)
+    const timesSorted = sort(times, sortBy)
+    const users = timesSorted.map((props, ind) => <User key={props.id} index={ind} {...props} />)
 
     return (
       <HarvestWrapper {...this.props}>
@@ -66,10 +61,9 @@ class Timesheets extends Component {
                 colors={['#2B8CBE']}
               />
             }>
-            {(times.length ? items: isFetching === false ? period === 'DAY' ? noResultsDay: noResultsPeriod: null)}
+            {(users.length ? users : <LoadingText {...this.props} />)}
           </ScrollView>
           <NavBar {...this.props} />
-          {(nav ? <Nav {...this.props} /> : null)}
         </View>
       </HarvestWrapper>
     )
@@ -98,13 +92,6 @@ const styles = {
   userList: {
     flex: 1,
     backgroundColor: 'white'
-  },
-  noResults: {
-    padding: 20,
-    fontSize: 18,
-    lineHeight: 26,
-    fontWeight: '200',
-    textAlign: 'center'
   },
   absoluteButton: {
     position: 'absolute',

@@ -2,7 +2,6 @@ import React, {
   Component,
   PropTypes,
   View,
-  DatePickerIOS,
   Animated,
   Dimensions
 } from 'react-native'

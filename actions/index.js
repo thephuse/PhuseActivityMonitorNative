@@ -16,13 +16,6 @@ export const NOT_CHECKING_COOKIE = 'NOT_CHECKING_COOKIE'
 export const VALIDATE_COOKIE = 'VALIDATE_COOKIE'
 export const INVALIDATE_COOKIE = 'INVALIDATE_COOKIE'
 
-export function layout(dimensions) {
-  return {
-    type: LAYOUT,
-    dimensions
-  }
-}
-
 export function requestTimes() {
   return {
     type: REQUEST_TIMES,
@@ -64,20 +57,6 @@ export function invalidateCookie() {
   return {
     type: INVALIDATE_COOKIE,
     cookieValid: false
-  }
-}
-
-export function openNav() {
-  return {
-    type: OPEN_NAV,
-    nav: true
-  }
-}
-
-export function closeNav() {
-  return {
-    type: CLOSE_NAV,
-    nav: false
   }
 }
 

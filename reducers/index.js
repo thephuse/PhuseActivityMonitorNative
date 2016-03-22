@@ -19,31 +19,17 @@ import periodValues from '../helpers/periodValues'
 import dateFormat from '../helpers/dateFormat'
 
 const initialState = {
-  dimensions: {},
   sortBy: sortByValues[0].value,
   period: periodValues[0].value,
   isFetching: false,
   startDate: moment().format(dateFormat),
   endDate: moment().format(dateFormat),
   times: [],
-  cookieValid: true,
-  nav: false
+  cookieValid: true
 }
 
 function timesheets(state = initialState, action) {
   switch (action.type) {
-    case LAYOUT :
-      return Object.assign({}, state, {
-        dimensions: action.dimensions
-      })
-    case OPEN_NAV :
-      return Object.assign({}, state, {
-        nav: action.nav
-      })
-    case CLOSE_NAV :
-      return Object.assign({}, state, {
-        nav: action.nav
-      })
     case SET_DATES :
       return Object.assign({}, state, {
         startDate: action.startDate,

@@ -2,8 +2,7 @@
 
 import React, {
   AppRegistry,
-  Component,
-  Navigator
+  Component
 } from 'react-native'
 
 import {
@@ -13,13 +12,10 @@ import {
 
 import {
   Router,
-  Route,
-  Schema
+  Route
 } from 'react-native-router-flux'
 
 import configureStore from './store'
-import sort from './helpers/sort'
-import sortByValues from './helpers/sortByValues'
 import Timesheets from './components/Timesheets'
 import StartDate from './components/StartDate'
 import EndDate from './components/EndDate'
@@ -35,7 +31,6 @@ class PhuseActivityMonitorNative extends Component {
     return (
       <Provider store={store}>
         <Router hideNavBar={true}>
-          <Schema name="default" sceneConfig={Navigator.SceneConfigs.FloatFromRight} />
           <Route name="index" component={connect(mapStateToProps)(Timesheets)} initial={true} title="Activity" />
           <Route name="startDate" component={connect(mapStateToProps)(StartDate)} type="modal" title="Start Date" />
           <Route name="endDate" component={connect(mapStateToProps)(EndDate)} type="modal" title="End Date" />
@@ -50,28 +45,7 @@ class PhuseActivityMonitorNative extends Component {
 }
 
 function mapStateToProps(state) {
-  const {
-    sortBy,
-    startDate,
-    endDate,
-    period,
-    isFetching,
-    times,
-    calendar,
-    cookieValid
-  } = state.timesheets
-
-  return {
-    sortBy,
-    startDate,
-    endDate,
-    period,
-    isFetching,
-    sortByValues,
-    calendar,
-    cookieValid,
-    times: sort(times, sortBy)
-  }
+  return state.timesheets
 }
 
 AppRegistry.registerComponent('PhuseActivityMonitorNative', () => PhuseActivityMonitorNative);

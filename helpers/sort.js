@@ -1,4 +1,5 @@
-export default function sort(arr, value) {
+export default function sort(entryArr, value) {
+  const arr = entryArr.slice()
   switch (value) {
     case 'FIRST_NAME_ASC':
       return arr.sort(function(a, b) {

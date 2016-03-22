@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -25,6 +24,7 @@
 		83A502408ACC4A748E22D0E5 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AED6C34D7E84957B0D3103C /* libBVLinearGradient.a */; };
 		86C354257EFF478D985F56BB /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B49C0B926F413A9863E3A0 /* libRNBlur.a */; };
 		B5B61E741C982C0E0038FD17 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B61E681C982BDA0038FD17 /* libART.a */; };
+		7A14D2037E4A49518C1B8B25 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EC5330FAA547899E754F53 /* libRCTCamera.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +155,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		B5B61E631C982BDA0038FD17 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		0D229E991B6D4270AF9EBE26 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; name = "RCTCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		54EC5330FAA547899E754F53 /* libRCTCamera.a */ = {isa = PBXFileReference; name = "libRCTCamera.a"; path = "libRCTCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				B5B61E741C982C0E0038FD17 /* libART.a in Frameworks */,
 				86C354257EFF478D985F56BB /* libRNBlur.a in Frameworks */,
 				83A502408ACC4A748E22D0E5 /* libBVLinearGradient.a in Frameworks */,
+				7A14D2037E4A49518C1B8B25 /* libRCTCamera.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +310,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				6281603EB30B4AD9B1E87B17 /* RNBlur.xcodeproj */,
 				55ADA3E64D724467B452AF4D /* BVLinearGradient.xcodeproj */,
+				0D229E991B6D4270AF9EBE26 /* RCTCamera.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -681,6 +685,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhuseActivityMonitorNative.app/PhuseActivityMonitorNative";
@@ -703,6 +708,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhuseActivityMonitorNative.app/PhuseActivityMonitorNative";
@@ -721,6 +727,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 				);
 				INFOPLIST_FILE = PhuseActivityMonitorNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -741,6 +748,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 				);
 				INFOPLIST_FILE = PhuseActivityMonitorNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -791,6 +799,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -834,6 +843,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

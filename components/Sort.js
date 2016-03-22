@@ -17,9 +17,19 @@ const ios = Platform.OS === 'ios'
 
 class Sort extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {firedOnce: false}
+  }
+
   setSortBy(value) {
     const { dispatch } = this.props
-    dispatch(sortBy(value))
+    const { firedOnce } = this.state
+    if (!ios && firedOnce === false) {
+      this.setState({firedOnce: true})
+    } else {
+      dispatch(sortBy(value))
+    }
   }
 
   render() {

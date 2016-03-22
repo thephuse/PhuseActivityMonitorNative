@@ -24,11 +24,21 @@ const ios = Platform.OS === 'ios'
 
 class PeriodFilters extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {firedOnce: false}
+  }
+
   setPeriod(value) {
-    const { dispatch } = this.props
-    dispatch(setPeriod(value))
-    dispatch(setDates())
-    dispatch(fetchTimes())
+    const { dispatch, period } = this.props
+    const { firedOnce } = this.state
+    if (!ios && period === 'DAY' && firedOnce === false) {
+      this.setState({firedOnce: true})
+    } else {
+      dispatch(setPeriod(value))
+      dispatch(setDates())
+      dispatch(fetchTimes())
+    }
   }
 
   render() {
