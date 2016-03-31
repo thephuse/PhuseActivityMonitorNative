@@ -111,7 +111,7 @@ const styles = {
   inlineUserDetail: {
     flex: 1,
     fontWeight: '200',
-    fontSize: (ios ? 14 : 17)
+    fontSize: (ios ? 14 : 16)
   },
   avatar: {
     width: 42,
@@ -127,7 +127,7 @@ const styles = {
     paddingRight: 15,
     marginLeft: (ios ? 0 : 15),
     fontWeight: (ios ? '200' : '500'),
-    fontSize: (ios ? 12 : 17)
+    fontSize: (ios ? 12 : 15)
   },
   totalHours: {
   },
@@ -157,9 +157,9 @@ const styles = {
   },
   percentage: {
     fontWeight: '200',
-    fontSize: (ios ? 14 : 17),
+    fontSize: (ios ? 14 : 16),
     position: 'absolute',
-    top: 11,
+    top: 9,
     left: 0,
     right: 0,
     color: 'black',

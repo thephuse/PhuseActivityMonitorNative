@@ -1,8 +1,8 @@
 import React, {
   Component,
-  WebView,
-  AsyncStorage,
-  Text
+  View,
+  Text,
+  WebView
 } from 'react-native'
 
 import moment from 'moment'
@@ -28,6 +28,16 @@ class HarvestWrapper extends Component {
     }
   }
 
+  renderLoadingView() {
+    return (
+      <View style={styles.loadingContainer}>
+        <View style={styles.loadingPositioner}>
+          <Text style={styles.loadingText}>Signing Into Harvest</Text>
+        </View>
+      </View>
+    )
+  }
+
   render() {
     const {
       children,
@@ -42,6 +52,8 @@ class HarvestWrapper extends Component {
         onNavigationStateChange={this.checkCallbackURL.bind(this)}
         onShouldStartLoadWithRequest={()=> true}
         javaScriptEnabled={true}
+        renderLoading={this.renderLoadingView}
+        automaticallyAdjustContentInsets={true}
       />
     )
 
@@ -51,3 +63,20 @@ class HarvestWrapper extends Component {
 }
 
 export default HarvestWrapper
+
+const styles = {
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  loadingPositioner: {},
+  loadingText: {
+    textAlign: 'center'
+  }
+}

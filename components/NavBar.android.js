@@ -6,6 +6,7 @@ import React, {
 } from 'react-native'
 import moment from 'moment'
 import Button from 'react-native-button'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Actions } from 'react-native-router-flux'
 
 import {
@@ -48,6 +49,8 @@ class NavBar extends Component {
       endDate
     } = this.props
 
+    const cannotGoLater = (!(moment(startDate).isBefore(moment().startOf('day'))) || moment(endDate).isAfter(moment().endOf('day')))
+
     return (
       <View style={styles.navBar}>
 
@@ -55,22 +58,22 @@ class NavBar extends Component {
           containerStyle={styles.navButtonContainer}
           style={styles.navButton}
           onPress={this.setDate.bind(this, 'subtract')}>
-            Earlier
+            <Icon name="skip-previous" size={24} color="#FFF" />
         </Button>
 
         <Button
           containerStyle={styles.navButtonContainer}
           style={styles.navButton}
           onPress={Actions.nav}>
-            Change Dates
+            <Icon name="date-range" size={24} color="#FFF" />
         </Button>
 
         <Button
           containerStyle={styles.navButtonContainer}
-          style={styles.navButton}
-          disabled={!(moment(startDate).isBefore(moment().startOf('day')))}
+          style={[styles.navButton, (cannotGoLater ? styles.disabled : {})]}
+          disabled={cannotGoLater}
           onPress={this.setDate.bind(this, 'add')}>
-            Later
+            <Icon name="skip-next" size={24} color="#FFF" />
         </Button>
 
       </View>
@@ -100,6 +103,9 @@ const styles = {
   navButton: {
     color: 'white',
     fontWeight: '200',
-    fontSize: 19
+    fontSize: 17
+  },
+  disabled: {
+    opacity: 0.3
   }
 }

@@ -5,7 +5,8 @@ import React, {
   Platform,
   Text,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  StatusBar
 } from 'react-native'
 import moment from 'moment'
 
@@ -48,24 +49,30 @@ class Timesheets extends Component {
     const users = timesSorted.map((props, ind) => <User key={props.id} index={ind} {...props} />)
 
     return (
-      <HarvestWrapper {...this.props}>
-        <View style={styles.rootView}>
-          <PeriodStatistics {...this.props} />
-          {(times.length ? <User header={true} /> : null )}
-          <ScrollView
-            style={styles.userList}
-            refreshControl={
-              <RefreshControl
-                refreshing={isFetching}
-                onRefresh={this.refresh.bind(this)}
-                colors={['#2B8CBE']}
-              />
-            }>
-            {(users.length ? users : <LoadingText {...this.props} />)}
-          </ScrollView>
-          <NavBar {...this.props} />
-        </View>
-      </HarvestWrapper>
+      <View style={styles.rootView}>
+        <StatusBar
+          backgroundColor="#2B8CBE"
+          barStyle="light-content"
+        />
+        <HarvestWrapper {...this.props}>
+          <View style={styles.rootView}>
+            <PeriodStatistics {...this.props} />
+            {(times.length ? <User header={true} /> : null )}
+            <ScrollView
+              style={styles.userList}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isFetching}
+                  onRefresh={this.refresh.bind(this)}
+                  colors={['#2B8CBE']}
+                />
+              }>
+              {(users.length ? users : <LoadingText {...this.props} />)}
+            </ScrollView>
+            <NavBar {...this.props} />
+          </View>
+        </HarvestWrapper>
+      </View>
     )
 
   }

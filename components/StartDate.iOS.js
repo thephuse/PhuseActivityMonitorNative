@@ -50,3 +50,5 @@ StartDate.propTypes = {
 }
 
 export default StartDate
+
+console.ignoredYellowBox = ['Warning: Failed propType']

@@ -41,5 +41,3 @@ function mapStateToProps(state) {
 }
 
 AppRegistry.registerComponent('PhuseActivityMonitorNative', () => PhuseActivityMonitorNative);
-
-console.ignoredYellowBox = ['Warning: Failed propType']

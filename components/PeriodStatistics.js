@@ -3,8 +3,7 @@ import React, {
   PropTypes,
   View,
   Text,
-  Platform,
-  StatusBar
+  Platform
 } from 'react-native'
 import { CircularProgress } from 'react-native-circular-progress'
 import { weekDays } from 'moment-business'
@@ -36,11 +35,16 @@ class PeriodStatistics extends Component {
 
   renderFigures(figure, text) {
     const { isFetching } = this.props
+    const defaultFontSize = (ios ? 18 : 25)
 
     return (
       <View style={styles.inlinePercentageText}>
         <View style={styles.inlinePercentageTextPositioner}>
-          <Text style={styles.periodStatisticValue}>{isFetching ? '--' : figure}</Text>
+          <Text style={[styles.periodStatisticValue, {
+            fontSize : Math.min(defaultFontSize, Math.round(90 / (figure.toString().length - 1)))
+          }]}>
+            {isFetching ? '···' : figure}
+          </Text>
           <Text style={styles.periodStatisticKey}>{text}</Text>
         </View>
       </View>
@@ -68,11 +72,6 @@ class PeriodStatistics extends Component {
 
     return (
       <View style={styles.periodStatistics}>
-
-        <StatusBar
-          backgroundColor="#2B8CBE"
-          barStyle="light-content"
-        />
 
         <View style={styles.periodStatisticValues}>
 
@@ -169,7 +168,7 @@ const styles = {
     letterSpacing: 0.5,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    fontSize: (ios ? 10 : 14),
+    fontSize: (ios ? 10 : 12),
     color: (ios ? 'black' : 'white')
   },
   inlinePercentageText: {
@@ -202,7 +201,6 @@ const styles = {
     paddingBottom: 0,
     paddingTop: 10,
     fontWeight: '200',
-    fontSize: (ios ? 15 : 18),
     color: (ios ? '#666666' : 'white')
   }
 }
