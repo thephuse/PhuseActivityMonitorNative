@@ -6,7 +6,8 @@ import React, {
   Text,
   ScrollView,
   RefreshControl,
-  StatusBar
+  StatusBar,
+  StyleSheet
 } from 'react-native'
 import moment from 'moment'
 
@@ -89,7 +90,7 @@ Timesheets.propTypes = {
   isFetching: PropTypes.bool.isRequired
 }
 
-const styles = {
+const styles = StyleSheet.create({
   rootView: {
     flex: 1,
     flexDirection: 'column',
@@ -107,4 +108,4 @@ const styles = {
     right: 0,
     flex: 0
   }
-}
+})

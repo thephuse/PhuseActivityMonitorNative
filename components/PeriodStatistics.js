@@ -3,7 +3,8 @@ import React, {
   PropTypes,
   View,
   Text,
-  Platform
+  Platform,
+  StyleSheet
 } from 'react-native'
 import { CircularProgress } from 'react-native-circular-progress'
 import { weekDays } from 'moment-business'
@@ -135,7 +136,7 @@ class PeriodStatistics extends Component {
 
 export default PeriodStatistics
 
-const styles = {
+const styles = StyleSheet.create({
   periodStatistics: {
     flex: 0,
     flexDirection: 'column',
@@ -203,4 +204,4 @@ const styles = {
     fontWeight: '200',
     color: (ios ? '#666666' : 'white')
   }
-}
+})

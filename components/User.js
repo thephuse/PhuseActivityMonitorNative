@@ -6,7 +6,8 @@ import React, {
   Text,
   Image,
   Animated,
-  TouchableHighlight
+  TouchableHighlight,
+  StyleSheet
 } from 'react-native'
 
 import md5 from 'md5'
@@ -85,7 +86,7 @@ class User extends Component {
 
 export default User
 
-const styles = {
+const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -171,4 +172,4 @@ const styles = {
     fontWeight: '200',
     color: '#666666'
   }
-}
+})

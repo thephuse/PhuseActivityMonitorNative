@@ -1,11 +1,9 @@
 {
   "name": "PhuseActivityMonitorNative",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "avd": "android avd",
-    "android": "react-native run-android"
+    "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
     "jstransform": "^11.0.3",
@@ -16,11 +14,11 @@
     "react-native": "^0.22.2",
     "react-native-blur": "^0.7.10",
     "react-native-button": "^1.4.2",
-    "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
+    "react-native-camera": "github:lwansbrough/react-native-camera",
     "react-native-circular-progress": "0.0.5",
     "react-native-linear-gradient": "^1.5.3",
     "react-native-router-flux": "^2.3.12",
-    "react-native-vector-icons": "oblador/react-native-vector-icons",
+    "react-native-vector-icons": "github:oblador/react-native-vector-icons",
     "react-redux": "^4.4.1",
     "redux": "^3.0.5",
     "redux-logger": "^2.6.1",

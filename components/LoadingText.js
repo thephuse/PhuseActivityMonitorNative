@@ -3,7 +3,8 @@ import React, {
   PropTypes,
   View,
   Text,
-  Animated
+  Animated,
+  StyleSheet
 } from 'react-native'
 
 import moment from 'moment'
@@ -65,7 +66,7 @@ LoadingText.propTypes = {
   sortBy: PropTypes.string.isRequired
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingLeft: 40,
@@ -78,4 +79,4 @@ const styles = {
     fontWeight: '200',
     textAlign: 'center'
   }
-}
+})

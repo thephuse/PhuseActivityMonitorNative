@@ -16,6 +16,7 @@ import {
 } from 'react-native-router-flux'
 
 import configureStore from './store'
+import Settings from './components/Settings'
 import Timesheets from './components/Timesheets'
 import Nav from './components/Nav'
 
@@ -27,7 +28,8 @@ class PhuseActivityMonitorNative extends Component {
     return (
       <Provider store={store}>
         <Router hideNavBar={true}>
-          <Route name="index" component={connect(mapStateToProps)(Timesheets)} initial={true} title="Activity" />
+          <Route name="settings" component={connect(mapStateToProps)(Settings)} initial={true} title="Activity" />
+          <Route name="index" component={connect(mapStateToProps)(Timesheets)} title="Activity" />
           <Route name="nav" component={connect(mapStateToProps)(Nav)} type="modal" title="Nav" />
         </Router>
       </Provider>

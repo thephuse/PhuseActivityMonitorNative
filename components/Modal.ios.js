@@ -3,7 +3,8 @@ import React, {
   PropTypes,
   View,
   Animated,
-  Dimensions
+  Dimensions,
+  StyleSheet
 } from 'react-native'
 
 import Button from 'react-native-button'
@@ -60,7 +61,7 @@ class Modal extends Component {
 
 export default Modal
 
-const styles = {
+const styles = StyleSheet.create({
   modal: {
     flex: 1,
     position: 'absolute',
@@ -85,4 +86,4 @@ const styles = {
   button: {
     padding: 15
   }
-}
+})

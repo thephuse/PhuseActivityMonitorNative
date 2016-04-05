@@ -2,7 +2,8 @@ import React, {
   Component,
   View,
   Text,
-  WebView
+  WebView,
+  StyleSheet
 } from 'react-native'
 
 import moment from 'moment'
@@ -64,7 +65,7 @@ class HarvestWrapper extends Component {
 
 export default HarvestWrapper
 
-const styles = {
+const styles = StyleSheet.create({
   loadingContainer: {
     position: 'absolute',
     top: 0,
@@ -79,4 +80,4 @@ const styles = {
   loadingText: {
     textAlign: 'center'
   }
-}
+})

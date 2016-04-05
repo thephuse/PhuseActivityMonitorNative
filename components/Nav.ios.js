@@ -6,7 +6,8 @@ import React, {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Animated,
-  Dimensions
+  Dimensions,
+  StyleSheet
 } from 'react-native'
 import moment from 'moment'
 import { Actions } from 'react-native-router-flux'
@@ -128,7 +129,7 @@ Nav.propTypes = {
   sortBy: PropTypes.string.isRequired,
 }
 
-const styles = {
+const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
     bottom: 0,
@@ -181,4 +182,4 @@ const styles = {
     textAlign: 'left',
     flex: 1.4
   }
-}
+})

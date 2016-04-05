@@ -2,7 +2,8 @@ import React, {
   Component,
   View,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
+  StyleSheet
 } from 'react-native'
 import moment from 'moment'
 import Button from 'react-native-button'
@@ -77,7 +78,7 @@ class NavBar extends Component {
 
 export default NavBar
 
-const styles = {
+const styles = StyleSheet.create({
   navBar: {
     flex: 0,
     flexDirection: 'row',
@@ -99,4 +100,4 @@ const styles = {
     paddingLeft: 15,
     paddingRight: 15
   }
-}
+})

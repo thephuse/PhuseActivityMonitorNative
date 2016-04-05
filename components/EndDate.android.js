@@ -4,7 +4,8 @@ import React, {
   View,
   Text,
   TouchableHighlight,
-  DatePickerAndroid
+  DatePickerAndroid,
+  StyleSheet
 } from 'react-native'
 
 import moment from 'moment'
@@ -62,7 +63,7 @@ EndDate.propTypes = {
 
 export default EndDate
 
-const styles = {
+const styles = StyleSheet.create({
   navButtonHighlight: {
     flex: 1
   },
@@ -78,4 +79,4 @@ const styles = {
     fontWeight: '300',
     textAlign: 'left',
   }
-}
+})
