@@ -8,10 +8,7 @@ import React, {
 } from 'react-native'
 
 import Button from 'react-native-button'
-import { BlurView } from 'react-native-blur'
 import { Actions } from 'react-native-router-flux'
-
-const { height: deviceHeight } = Dimensions.get('window')
 
 class Modal extends Component {
 
@@ -19,21 +16,21 @@ class Modal extends Component {
     super(props)
     this.state = {
       opacity: new Animated.Value(0),
-      offset: new Animated.Value(deviceHeight)
+      offset: new Animated.Value(200)
     }
   }
 
   componentDidMount() {
     const { opacity, offset } = this.state
-    Animated.timing(opacity, { duration: 200, toValue: 1 }).start()
-    Animated.timing(offset, { duration: 200, toValue: 0 }).start()
+    Animated.timing(opacity, { duration: 250, toValue: 1 }).start()
+    Animated.timing(offset, { duration: 250, toValue: 0 }).start()
   }
 
   closeModal() {
     const { opacity, offset } = this.state
-    const { dismiss } = Actions
-    Animated.timing(opacity, { duration: 200, toValue: 0 }).start(dismiss)
-    Animated.timing(offset, { duration: 200, toValue: deviceHeight }).start(dismiss)
+    const { pop } = Actions
+    Animated.timing(opacity, { duration: 250, toValue: 0 }).start()
+    Animated.timing(offset, { duration: 250, toValue: 200 }).start(pop)
   }
 
   render() {
@@ -43,16 +40,14 @@ class Modal extends Component {
 
     return (
       <Animated.View style={[ styles.modal, {opacity: this.state.opacity} ]}>
-        <BlurView blurType="light" style={styles.modal}>
-          <Animated.View style={[ styles.rootView, {transform: [{translateY: this.state.offset}]} ]}>
-            <View style={styles.innerView}>{children}</View>
-            <Button
-              style={styles.button}
-              onPress={this.closeModal.bind(this)}>
-              Done
-            </Button>
-          </Animated.View>
-        </BlurView>
+        <Animated.View style={[ styles.rootView, {transform: [{translateY: this.state.offset}]} ]}>
+          <View style={styles.innerView}>{children}</View>
+          <Button
+            style={styles.button}
+            onPress={this.closeModal.bind(this)}>
+            Done
+          </Button>
+        </Animated.View>
       </Animated.View>
     )
   }

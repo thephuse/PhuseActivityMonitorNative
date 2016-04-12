@@ -9,8 +9,12 @@ import React, {
   Dimensions,
   StyleSheet
 } from 'react-native'
+
 import moment from 'moment'
+
+import Button from 'react-native-button'
 import { Actions } from 'react-native-router-flux'
+
 import capitalize from '../helpers/capitalize'
 import sortByValues from '../helpers/sortByValues'
 
@@ -19,29 +23,27 @@ import {
   fetchTimes
 } from '../actions'
 
-const { height: deviceHeight } = Dimensions.get('window')
-
 class Nav extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      offset: new Animated.Value(deviceHeight),
+      offset: new Animated.Value(200),
       opacity: new Animated.Value(0)
     }
   }
 
   componentDidMount() {
     const { offset, opacity } = this.state
-    Animated.timing(offset, { duration: 200, toValue: 0 }).start()
-    Animated.timing(opacity, { duration: 200, toValue: 1 }).start()
+    Animated.timing(offset, { duration: 250, toValue: 0 }).start()
+    Animated.timing(opacity, { duration: 250, toValue: 1 }).start()
   }
 
   closeModal() {
     const { offset, opacity } = this.state
-    const { dismiss } = Actions
-    Animated.timing(offset, { duration: 200, toValue: deviceHeight }).start(dismiss)
-    Animated.timing(opacity, { duration: 200, toValue: 0 }).start(dismiss)
+    const { pop } = Actions
+    Animated.timing(offset, { duration: 250, toValue: 200 }).start()
+    Animated.timing(opacity, { duration: 250, toValue: 0 }).start(pop)
   }
 
   render() {
@@ -72,45 +74,55 @@ class Nav extends Component {
         <Animated.View
           style={[styles.navButtons, {transform: [{translateY: offset}]}]}>
 
-          <TouchableHighlight
-            style={styles.navButtonHighlight}
-            underlayColor="#2B8CBE"
-            onPress={Actions.startDate}>
-            <View style={[styles.navButton, {borderTopWidth: 0}]}>
-              <Text style={styles.navButtonKey}>From</Text>
-              <Text style={styles.navButtonValue}>{moment(startDate).format('MMMM Do, YYYY')}</Text>
-            </View>
-          </TouchableHighlight>
+          <View style={styles.navButtonWrapper}>
 
-          <TouchableHighlight
-            style={styles.navButtonHighlight}
-            underlayColor="#2B8CBE"
-            onPress={Actions.endDate}>
-            <View style={styles.navButton}>
-              <Text style={styles.navButtonKey}>To</Text>
-              <Text style={styles.navButtonValue}>{moment(endDate).format('MMMM Do, YYYY')}</Text>
-            </View>
-          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.navButtonHighlight}
+              underlayColor="#2B8CBE"
+              onPress={Actions.startDate}>
+              <View style={[styles.navButton, {borderTopWidth: 0}]}>
+                <Text style={styles.navButtonKey}>From</Text>
+                <Text style={styles.navButtonValue}>{moment(startDate).format('MMMM Do, YYYY')}</Text>
+              </View>
+            </TouchableHighlight>
 
-          <TouchableHighlight
-            style={styles.navButtonHighlight}
-            underlayColor="#2B8CBE"
-            onPress={Actions.period}>
-            <View style={styles.navButton}>
-              <Text style={styles.navButtonKey}>Period</Text>
-              <Text style={styles.navButtonValue}>{capitalize(period)}</Text>
-            </View>
-          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.navButtonHighlight}
+              underlayColor="#2B8CBE"
+              onPress={Actions.endDate}>
+              <View style={styles.navButton}>
+                <Text style={styles.navButtonKey}>To</Text>
+                <Text style={styles.navButtonValue}>{moment(endDate).format('MMMM Do, YYYY')}</Text>
+              </View>
+            </TouchableHighlight>
 
-          <TouchableHighlight
-            style={styles.navButtonHighlight}
-            underlayColor="#2B8CBE"
-            onPress={Actions.sort}>
-            <View style={styles.navButton}>
-              <Text style={styles.navButtonKey}>Sort By</Text>
-              <Text style={styles.navButtonValue}>{sortByValues.filter(sb => (sortBy === sb.value))[0].title}</Text>
-            </View>
-          </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.navButtonHighlight}
+              underlayColor="#2B8CBE"
+              onPress={Actions.period}>
+              <View style={styles.navButton}>
+                <Text style={styles.navButtonKey}>Period</Text>
+                <Text style={styles.navButtonValue}>{capitalize(period)}</Text>
+              </View>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              style={styles.navButtonHighlight}
+              underlayColor="#2B8CBE"
+              onPress={Actions.sort}>
+              <View style={styles.navButton}>
+                <Text style={styles.navButtonKey}>Sort By</Text>
+                <Text style={styles.navButtonValue}>{sortByValues.filter(sb => (sortBy === sb.value))[0].title}</Text>
+              </View>
+            </TouchableHighlight>
+
+          </View>
+
+          <Button
+            style={styles.button}
+            onPress={this.closeModal.bind(this)}>
+            Done
+          </Button>
 
         </Animated.View>
 
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)'
+    backgroundColor: 'rgba(0,0,0,0.1)'
   },
   overlayDismissal: {
     flex: 1
@@ -147,16 +159,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     shadowColor: 'black',
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 5,
-    paddingBottom: 5,
     shadowOpacity: 0.1,
     shadowRadius: 12,
     shadowOffset: {
       height: 0,
       width: 0
     }
+  },
+  navButtonWrapper: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#efefef'
   },
   navButtonHighlight: {
     flex: 1
@@ -181,5 +195,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     flex: 1.4
+  },
+  button: {
+    padding: 15
   }
 })

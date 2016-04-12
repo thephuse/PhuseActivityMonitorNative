@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     fontSize: (ios ? 14 : 16),
     position: 'absolute',
-    top: 9,
+    top: (ios ? 11 : 9),
     left: 0,
     right: 0,
     color: 'black',

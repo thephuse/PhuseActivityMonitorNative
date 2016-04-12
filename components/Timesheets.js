@@ -53,7 +53,7 @@ class Timesheets extends Component {
       <View style={styles.rootView}>
         <StatusBar
           backgroundColor="#2B8CBE"
-          barStyle="light-content"
+          barStyle={(ios ? 'default' : 'light-content')}
         />
         <HarvestWrapper {...this.props}>
           <View style={styles.rootView}>

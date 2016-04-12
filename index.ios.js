@@ -2,7 +2,8 @@
 
 import React, {
   AppRegistry,
-  Component
+  Component,
+  StatusBar
 } from 'react-native'
 
 import {
@@ -12,7 +13,9 @@ import {
 
 import {
   Router,
-  Route
+  Scene,
+  Modal,
+  Actions
 } from 'react-native-router-flux'
 
 import configureStore from './store'
@@ -25,27 +28,29 @@ import Nav from './components/Nav'
 
 const store = configureStore()
 
-class PhuseActivityMonitorNative extends Component {
+const mapStateToProps = function(state) {
+  return state.timesheets
+}
 
+const scenes = Actions.create(
+  <Scene key="modal" component={Modal}>
+    <Scene key="timesheets" component={connect(mapStateToProps)(Timesheets)} title="Activity" />
+    <Scene key="startDate" component={connect(mapStateToProps)(StartDate)} title="Start Date" />
+    <Scene key="endDate" component={connect(mapStateToProps)(EndDate)} title="End Date" />
+    <Scene key="period" component={connect(mapStateToProps)(PeriodFilters)} title="Period" />
+    <Scene key="sort" component={connect(mapStateToProps)(Sort)} title="Sort" />
+    <Scene key="nav" component={connect(mapStateToProps)(Nav)} title="Nav" />
+  </Scene>
+)
+
+class PhuseActivityMonitorNative extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router hideNavBar={true}>
-          <Route name="index" component={connect(mapStateToProps)(Timesheets)} initial={true} title="Activity" />
-          <Route name="startDate" component={connect(mapStateToProps)(StartDate)} type="modal" title="Start Date" />
-          <Route name="endDate" component={connect(mapStateToProps)(EndDate)} type="modal" title="End Date" />
-          <Route name="period" component={connect(mapStateToProps)(PeriodFilters)} type="modal" title="Period" />
-          <Route name="sort" component={connect(mapStateToProps)(Sort)} type="modal" title="Sort" />
-          <Route name="nav" component={connect(mapStateToProps)(Nav)} type="modal" title="Nav" />
-        </Router>
+        <Router hideNavBar={true} scenes={scenes} />
       </Provider>
     )
   }
-
-}
-
-function mapStateToProps(state) {
-  return state.timesheets
 }
 
 AppRegistry.registerComponent('PhuseActivityMonitorNative', () => PhuseActivityMonitorNative);
