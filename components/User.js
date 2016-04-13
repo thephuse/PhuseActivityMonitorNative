@@ -7,7 +7,9 @@ import React, {
   Image,
   Animated,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  LayoutAnimation,
+  InteractionManager
 } from 'react-native'
 
 import md5 from 'md5'
@@ -17,21 +19,40 @@ import { Actions } from 'react-native-router-flux'
 
 const ios = Platform.OS === 'ios'
 
+class UserHeaders extends Component {
+  render() {
+    return (
+      <View
+        style={[styles.listItem, styles.borderlessListItem]}
+        shouldRasterizeIOS={true}>
+        <View style={styles.avatarPlaceholder} />
+        <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
+        <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
+        <Text style={[styles.inlineUserDetail, styles.billableHours, styles.tableHeader]}>BILLABLE</Text>
+        <View style={[styles.percentageContainer]}>
+          <Text style={styles.tableHeader}>RATIO</Text>
+          <View style={styles.percentageGraphicPlaceholder} />
+        </View>
+      </View>
+    )
+  }
+}
+
 class User extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      opacity: new Animated.Value(0),
-      translateY: new Animated.Value(10)
+      opacity: 0,
+      scale: 0
     }
   }
 
   componentDidMount() {
-    const { opacity, translateY } = this.state
-    const { index } = this.props
-    Animated.timing(opacity, { duration: 250, toValue: 1, delay: 250 + (index * 100) }).start()
-    Animated.timing(translateY, { duration: 250, toValue: 0, delay: 250 + (index * 100) }).start()
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({ opacity: 1, scale: 1 })
+    })
   }
 
   render() {
@@ -49,22 +70,11 @@ class User extends Component {
     const gravatar = `https://www.gravatar.com/avatar/${md5(email)}`
     const percentage = (billable_total/total).toFixed(2)
 
-    return (header === true ?
-      <View
-        style={[styles.listItem, styles.borderlessListItem]}
-        shouldRasterizeIOS={true}>
-        <View style={styles.avatarPlaceholder} />
-        <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
-        <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
-        <Text style={[styles.inlineUserDetail, styles.billableHours, styles.tableHeader]}>BILLABLE</Text>
-        <View style={[styles.percentageContainer]}>
-          <Text style={styles.tableHeader}>RATIO</Text>
-          <View style={styles.percentageGraphicPlaceholder} />
-        </View>
-      </View>
-    :
-      <Animated.View
-        style={[styles.listItem, {transform: [{translateY: this.state.translateY}], opacity: this.state.opacity}]}
+    return (
+      header === true
+      ? <UserHeaders />
+      : <View
+        style={[styles.listItem, {transform: [{scale: this.state.scale}], opacity: this.state.opacity}]}
         shouldRasterizeIOS={true}>
         <Image style={styles.avatar} source={{ uri: gravatar}} />
         <Text style={[styles.inlineUserDetail, styles.name]}>{`${first_name}\n${last_name}`}</Text>
@@ -78,7 +88,7 @@ class User extends Component {
             <Text style={[styles.percentage]}>{(percentage * 100).toFixed(0)}%</Text>
           </LinearGradient>
         </View>
-      </Animated.View>
+      </View>
     )
   }
 
