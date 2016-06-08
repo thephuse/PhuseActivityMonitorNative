@@ -22,6 +22,7 @@ import configureStore from './store'
 import Timesheets from './components/Timesheets'
 import StartDate from './components/StartDate'
 import EndDate from './components/EndDate'
+import QRScanner from './components/QRScanner'
 import PeriodFilters from './components/PeriodFilters'
 import Sort from './components/Sort'
 import Nav from './components/Nav'
@@ -34,7 +35,10 @@ const mapStateToProps = function(state) {
 
 const scenes = Actions.create(
   <Scene key="modal" component={Modal}>
-    <Scene key="timesheets" component={connect(mapStateToProps)(Timesheets)} title="Activity" />
+    <Scene key="root">
+      <Scene key="timesheets" component={connect(mapStateToProps)(Timesheets)} title="Activity" initial={true} />
+      <Scene key="qrScanner" component={connect(mapStateToProps)(QRScanner)} title="QR Scanner" />
+    </Scene>
     <Scene key="startDate" component={connect(mapStateToProps)(StartDate)} title="Start Date" />
     <Scene key="endDate" component={connect(mapStateToProps)(EndDate)} title="End Date" />
     <Scene key="period" component={connect(mapStateToProps)(PeriodFilters)} title="Period" />

@@ -81,6 +81,15 @@ class Nav extends Component {
             </View>
           </TouchableHighlight>
 
+          <TouchableHighlight
+            style={styles.navButtonHighlight}
+            underlayColor="#2B8CBE"
+            onPress={Actions.qrScanner}>
+            <View style={styles.navButton}>
+              <Text style={styles.navButtonKey}>Scan QR Code</Text>
+            </View>
+          </TouchableHighlight>
+
         </View>
 
       </Modal>

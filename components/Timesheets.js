@@ -15,6 +15,7 @@ import sort from '../helpers/sort'
 import { fetchTimes } from '../actions'
 
 import User from './User'
+import UserHeaders from './UserHeaders'
 import NavBar from './NavBar'
 import LoadingText from './LoadingText'
 import HarvestWrapper from './HarvestWrapper'
@@ -58,7 +59,7 @@ class Timesheets extends Component {
         <HarvestWrapper {...this.props}>
           <View style={styles.rootView}>
             <PeriodStatistics {...this.props} />
-            {(times.length ? <User header={true} /> : null )}
+            {(users.length ? <UserHeaders /> : null )}
             <ScrollView
               style={styles.userList}
               refreshControl={

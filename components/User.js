@@ -19,40 +19,14 @@ import { Actions } from 'react-native-router-flux'
 
 const ios = Platform.OS === 'ios'
 
-class UserHeaders extends Component {
-  render() {
-    return (
-      <View
-        style={[styles.listItem, styles.borderlessListItem]}
-        shouldRasterizeIOS={true}>
-        <View style={styles.avatarPlaceholder} />
-        <Text style={[styles.inlineUserDetail, styles.name, styles.tableHeader]}>NAME</Text>
-        <Text style={[styles.inlineUserDetail, styles.totalHours, styles.tableHeader]}>TOTAL</Text>
-        <Text style={[styles.inlineUserDetail, styles.billableHours, styles.tableHeader]}>BILLABLE</Text>
-        <View style={[styles.percentageContainer]}>
-          <Text style={styles.tableHeader}>RATIO</Text>
-          <View style={styles.percentageGraphicPlaceholder} />
-        </View>
-      </View>
-    )
-  }
-}
-
 class User extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      opacity: 0,
-      scale: 0
-    }
+  componentDidMount() {
+    LayoutAnimation.spring()
   }
 
-  componentDidMount() {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    InteractionManager.runAfterInteractions(() => {
-      this.setState({ opacity: 1, scale: 1 })
-    })
+  componentWillUnmount() {
+    LayoutAnimation.easeInEaseOut()
   }
 
   render() {
@@ -71,11 +45,7 @@ class User extends Component {
     const percentage = (billable_total/total).toFixed(2)
 
     return (
-      header === true
-      ? <UserHeaders />
-      : <View
-        style={[styles.listItem, {transform: [{scale: this.state.scale}], opacity: this.state.opacity}]}
-        shouldRasterizeIOS={true}>
+      <View style={[styles.listItem]}>
         <Image style={styles.avatar} source={{ uri: gravatar}} />
         <Text style={[styles.inlineUserDetail, styles.name]}>{`${first_name}\n${last_name}`}</Text>
         <Text style={[styles.inlineUserDetail, styles.totalHours]}>{total.toFixed(2)}</Text>
@@ -129,20 +99,12 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 21
   },
-  avatarPlaceholder: {
-    width: 42,
-    height: 1
-  },
   name: {
     paddingLeft: (ios ? 15 : 0),
     paddingRight: 15,
     marginLeft: (ios ? 0 : 15),
     fontWeight: (ios ? '200' : '500'),
     fontSize: (ios ? 12 : 15)
-  },
-  totalHours: {
-  },
-  billableHours: {
   },
   percentageContainer: {
     flex: 0
@@ -156,16 +118,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#efefef'
   },
-  percentageGraphicPlaceholder: {
-    width: 42,
-    height: 1
-  },
-  percentageClear: {
-    backgroundColor: '#fff'
-  },
-  percentageBlob: {
-    backgroundColor: '#efefef'
-  },
   percentage: {
     fontWeight: '200',
     fontSize: (ios ? 14 : 16),
@@ -176,10 +128,5 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     backgroundColor: 'transparent'
-  },
-  tableHeader: {
-    fontSize: (ios ? 9 : 12),
-    fontWeight: '200',
-    color: '#666666'
   }
 })
